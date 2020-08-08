@@ -1,0 +1,92 @@
+@startuml 
+package "Scuria" {
+  entity "users" {
+    + id [PK]
+    ==
+    # company_id [FK(companies,id)]
+    email
+    encrypted_password
+    reset_password_token
+    reset_password_sent_at
+    remember_created_at
+    sign_in_count
+    current_sign_in_at
+    last_sign_in_at
+    current_sign_in_ip
+    last_sign_in_ip
+    failed_attempts
+    unlock_token
+    locked_at
+    deleted_at
+    created_at
+    updated_at
+  }
+  entity "admins" {
+    + id [PK]
+    ==
+    email
+    encrypted_password
+    reset_password_token
+    reset_password_sent_at
+    remember_created_at
+    sign_in_count
+    current_sign_in_at
+    last_sign_in_at
+    current_sign_in_ip
+    last_sign_in_ip
+    failed_attempts
+    unlock_token
+    locked_at
+    created_at
+    updated_at
+  }
+  entity "companies" {
+    + id [PK]
+    ==
+    email
+    name
+    deleted_at
+    created_at
+    updated_at
+  }
+  entity "backlog_authorities" {
+    + id [PK]
+    ==
+    # backlog_id [FK(backlogs,id)]
+    roll_name
+    created_at
+    updated_at
+  }
+  entity "backlogs" {
+    + id [PK]
+    ==
+    # company_id [FK(companies,id)]
+    # parent_id [FK(backlogs,id)] 
+    name
+    created_at
+    updated_at 
+  }
+
+  entity "backlog_members" {
+    + id [PK]
+    ==
+    # backlog_id [FK(backlogs,id)]
+    # authority_id [FK(backlog_authorities,id)
+    # user_id [FK(users,id) 
+    created_at
+    updated_at
+  }
+
+
+  users }o-- companies
+  backlog_authorities ||-- backlogs
+  backlogs |o-- backlogs
+  backlog_members }o-- backlogs
+  backlog_members -- backlog_authorities
+  backlog_members }o--o{ users
+
+
+
+}
+
+@enduml
