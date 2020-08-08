@@ -33,7 +33,6 @@ package "Scuria" {
   entity "admins" {
      + id INT [PK]
     ==
-    # company_id [FK(companies,id)]
     email: VARCHAR(255)
     encrypted_password: VARCHAR(255)
     reset_password_token: VARCHAR(255)
@@ -146,9 +145,6 @@ package "Scuria" {
   backlogs |o-- backlogs
   backlog_members }o-- backlogs
   backlog_members -- backlog_authorities
-  backlog_members }o--o{ users
-
-  users ||--o{ backlog_items
 
   backlog_columns ||--o{ backlog_items
   backlog_items ||--o{ backlog_item_to_backlog_tags
