@@ -139,8 +139,8 @@ entity "BacklogItem to BacklogTags" as backlog_items_to_backlog_tags {
     *id: INT
     --
     backlog_item_id: INT
-    backlog_tag_id: INT [FK(backlog_items,id)]
-    update_at: timestamp [FK(backlog_tags,id)]
+    # backlog_tag_id: INT [FK(backlog_items,id)]
+    # update_at: timestamp [FK(backlog_tags,id)]
     created_at: timestamp
 }
 
