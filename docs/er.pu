@@ -96,8 +96,8 @@ package "Scuria" {
     update_at: timestamp
     created_at: timestamp
   }
-  
-  
+
+
   entity "backlog_items" {
     +id: INT
     ==
@@ -111,13 +111,13 @@ package "Scuria" {
     update_at: timestamp
     created_at: timestamp
   }
-  
-  entity "backlog_items_to_backlog_tags" {
+
+  entity "backlog_item_to_backlog_tags" {
     +id: INT
     ==
-    backlog_item_id: INT
-    backlog_tag_id: INT [FK(backlog_items,id)]
-    update_at: timestamp [FK(backlog_tags,id)]
+    backlog_item_id: INT [FK(backlog_items,id)]
+    backlog_tag_id: INT [FK(backlog_tags,id)]
+    update_at: timestamp
     created_at: timestamp
   }
   entity "backlog_member_to_users" {
@@ -125,15 +125,15 @@ package "Scuria" {
     ==
     backlog_members_id: INT [FK(backlog_members,id)]
     users_id: INT [FK(users,id)
-    update_at: timestamp]
+    update_at: timestamp
     created_at: timestamp
   }
-  
+
   entity "backlog_tags" {
     +id: INT
     ==
     name: VARCHAR(255)
-    # backlog_item_id: INT [FK(backlog_items_to_backlog_tags, back_log_item_id)]
+    # backlog_item_id: INT [FK(backlog_item_to_backlog_tags, back_log_item_id)]
     update_at: timestamp
     created_at: timestamp
   }
@@ -147,10 +147,10 @@ package "Scuria" {
   backlog_members }o--o{ users
 
   users ||--o{ backlog_items
-  
+
   backlog_columns ||--o{ backlog_items
-  backlog_items ||--|{ backlog_items_to_backlog_tags
-  backlog_items_to_backlog_tags }|--||backlog_tags
+  backlog_items ||--o{ backlog_item_to_backlog_tags
+  backlog_item_to_backlog_tags }o--||backlog_tags
   backlog_members ||--|{ backlog_member_to_users
   backlog_members_to_user }|--||users
 
