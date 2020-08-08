@@ -139,6 +139,15 @@ package "Scuria" {
     created_at: datetime
   }
 
+  entity "user_to_backlog_items" {
+    +id: INT
+    ==
+    user_id: INT [FK(users,id)]
+    backlog_item_id: INT [FK(backlog_items,id)]
+    update_at: datetime
+    created_at: datetime
+  }
+
 
   users }o-- companies
   backlog_authorities ||-- backlogs
@@ -151,6 +160,9 @@ package "Scuria" {
   backlog_item_to_backlog_tags }o--||backlog_tags
   backlog_members ||--|{ backlog_member_to_users
   backlog_member_to_users}|--||users
+
+  users ||--o{ user_to_backlog_items
+  user_to_backlog_items }o--|| backlog_items
 
 }
 
