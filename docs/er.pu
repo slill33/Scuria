@@ -1,4 +1,12 @@
-@startuml 
+@startuml
+
+' hide the spot
+' hide circle
+
+' avoid problems with angled crows feet
+' skinparam linetype ortho
+
+
 package "Scuria" {
   entity "users" {
     + id [PK]
@@ -21,6 +29,7 @@ package "Scuria" {
     created_at
     updated_at
   }
+
   entity "admins" {
     + id [PK]
     ==
@@ -40,6 +49,7 @@ package "Scuria" {
     created_at
     updated_at
   }
+
   entity "companies" {
     + id [PK]
     ==
@@ -49,6 +59,7 @@ package "Scuria" {
     created_at
     updated_at
   }
+
   entity "backlog_authorities" {
     + id [PK]
     ==
@@ -57,6 +68,7 @@ package "Scuria" {
     created_at
     updated_at
   }
+
   entity "backlogs" {
     + id [PK]
     ==
@@ -77,53 +89,18 @@ package "Scuria" {
     updated_at
   }
 
-
-  users }o-- companies
-  backlog_authorities ||-- backlogs
-  backlogs |o-- backlogs
-  backlog_members }o-- backlogs
-  backlog_members -- backlog_authorities
-  backlog_members }o--o{ users
-
-
-
-}
-
-
-entity "Users" as u {
-    + id [PK]
+  entity "backlog_columns" {
+    +id: INT
     ==
-    # company_id [FK(companies,id)]
-    email
-    encrypted_password
-    reset_password_token
-    reset_password_sent_at
-    remember_created_at
-    sign_in_count
-    current_sign_in_at
-    last_sign_in_at
-    current_sign_in_ip
-    last_sign_in_ip
-    failed_attempts
-    unlock_token
-    locked_at
-    deleted_at
-    created_at
-    updated_at
-}
-
-entity "BacklogColumns" as backlog_columns {
-    *id: INT
-    --
     name: VARCHAR(255)
     update_at: timestamp
     created_at: timestamp
-}
-
-
-entity "BacklogItems" as backlog_items {
-    *id: INT
-    --
+  }
+  
+  
+  entity "backlog_items" {
+    +id: INT
+    ==
     name: VARCHAR(255)
     # assigned_user_id: INT [FK(users,id)]
     # backlog_column_id: INT [FK(backlog_columns,id)]
@@ -133,32 +110,41 @@ entity "BacklogItems" as backlog_items {
     completed_at: timestamp
     update_at: timestamp
     created_at: timestamp
-}
-
-entity "BacklogItem to BacklogTags" as backlog_items_to_backlog_tags {
-    *id: INT
-    --
+  }
+  
+  entity "backlog_items_to_backlog_tags" {
+    +id: INT
+    ==
     backlog_item_id: INT
-    # backlog_tag_id: INT [FK(backlog_items,id)]
-    # update_at: timestamp [FK(backlog_tags,id)]
+    backlog_tag_id: INT [FK(backlog_items,id)]
+    update_at: timestamp [FK(backlog_tags,id)]
     created_at: timestamp
-}
-
-entity "BacklogTags" as backlog_tags {
-    *id: INT
-    --
-    name : string
+  }
+  
+  entity "backlog_tags" {
+    +id: INT
+    ==
+    name: VARCHAR(255)
     # backlog_item_id: INT [FK(backlog_items_to_backlog_tags, back_log_item_id)]
     update_at: timestamp
     created_at: timestamp
+  }
+
+
+  users }o-- companies
+  backlog_authorities ||-- backlogs
+  backlogs |o-- backlogs
+  backlog_members }o-- backlogs
+  backlog_members -- backlog_authorities
+  backlog_members }o--o{ users
+
+  users ||--o{ backlog_items
+  
+  backlog_columns ||--o{ backlog_items
+  backlog_items ||--|{ backlog_items_to_backlog_tags
+  backlog_items_to_backlog_tags }|--||backlog_tags
+
 }
 
-
-
-u ||..o{ backlog_items
-
-backlog_columns ||..o{ backlog_items
-backlog_items ||..|{ backlog_items_to_backlog_tags
-backlog_items_to_backlog_tags }|..||backlog_tags
 
 @enduml
