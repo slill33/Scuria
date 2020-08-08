@@ -11,7 +11,7 @@ package "Scuria" {
   entity "users" {
     + id INT [PK]
     ==
-    # company_id [FK(companies,id)]
+    # company_id: INT [FK(companies,id)]
     email: VARCHAR(255)
     encrypted_password: VARCHAR(255)
     reset_password_token: VARCHAR(255)
@@ -61,38 +61,30 @@ package "Scuria" {
     updated_at: datetime
   }
 
-  entity "backlog_authorities" {
+  entity "backlog_roles" {
     + id: INT [PK]
     ==
-    # backlog_id [FK(backlogs,id)]
+    # backlog_id: INT [FK(backlogs,id)]
     roll_name: VARCHAR(255)
     created_at: datetime
     updated_at: datetime
   }
 
+
   entity "backlogs" {
     + id: INT [PK]
     ==
-    # company_id [FK(companies,id)]
-    # parent_id [FK(backlogs,id)] 
+    # company_id: INT [FK(companies,id)]
+    # parent_id: INT [FK(backlogs,id)] 
     name: VARCHAR(255)
     created_at: datetime
     updated_at: datetime 
   }
 
-  entity "backlog_members" {
-    + id: INT [PK]
-    ==
-    # backlog_id [FK(backlogs,id)]
-    # authority_id [FK(backlog_authorities,id)
-    # user_id [FK(users,id) 
-    created_at: datetime
-    updated_at: datetime
-  }
-
   entity "backlog_columns" {
     +id: INT
     ==
+    # backlog_id: INT [FK(backlogs,id)]
     name: VARCHAR(255)
     update_at: datetime
     created_at: datetime
@@ -116,16 +108,19 @@ package "Scuria" {
   entity "backlog_item_to_backlog_tags" {
     +id: INT
     ==
-    backlog_item_id: INT [FK(backlog_items,id)]
-    backlog_tag_id: INT [FK(backlog_tags,id)]
+    backlog_id: INT [FK(backlog_items,id)]
+    users: INT [FK(backlog_tags,id)]
     update_at: datetime
     created_at: datetime
   }
-  entity "backlog_member_to_users" {
+
+
+  entity "backlog_members" {
     +id: INT
     ==
-    backlog_members_id: INT [FK(backlog_members,id)]
-    users_id: INT [FK(users,id)
+    # backlog_rolles_id: INT [FK(backlogs,id)]
+    backlog_item_id: INT [FK(backlog_items,id)]
+    backlog_tag_id: INT [FK(backlog_tags,id)]
     update_at: datetime
     created_at: datetime
   }
@@ -150,17 +145,17 @@ package "Scuria" {
 
 
   users }o-- companies
-  backlog_authorities ||-- backlogs
+  backlog_roles ||-- backlogs
   backlogs |o-- backlogs
-  backlog_members }o-- backlogs
-  backlog_members -- backlog_authorities
 
+  backlog_columns ||-- backlogs
   backlog_columns ||--o{ backlog_items
   backlog_items ||--o{ backlog_item_to_backlog_tags
   backlog_item_to_backlog_tags }o--||backlog_tags
-  backlog_members ||--|{ backlog_member_to_users
-  backlog_member_to_users}|--||users
+  backlogs ||--|{ backlog_members
+  backlog_members}|--||users
 
+  backlog_roles --o{ backlog_members
   users ||--o{ user_to_backlog_items
   user_to_backlog_items }o--|| backlog_items
 
