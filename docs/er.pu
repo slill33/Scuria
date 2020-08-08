@@ -120,6 +120,14 @@ package "Scuria" {
     update_at: timestamp [FK(backlog_tags,id)]
     created_at: timestamp
   }
+  entity "backlog_member_to_users" {
+    +id: INT
+    ==
+    backlog_members_id: INT [FK(backlog_members,id)]
+    users_id: INT [FK(users,id)
+    update_at: timestamp]
+    created_at: timestamp
+  }
   
   entity "backlog_tags" {
     +id: INT
@@ -143,6 +151,8 @@ package "Scuria" {
   backlog_columns ||--o{ backlog_items
   backlog_items ||--|{ backlog_items_to_backlog_tags
   backlog_items_to_backlog_tags }|--||backlog_tags
+  backlog_members ||--|{ backlog_member_to_users
+  backlog_members_to_user }|--||users
 
 }
 
