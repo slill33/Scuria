@@ -13,30 +13,33 @@
     * 後から実装
     * 最初はPO SMのみできる操作をメンバーでもできるように変更するかも
 
-* ProductBacklogs
+* Backlogs
     * Companyに関連
-    * 親、もしくは子にProductBacklogsを持つことがある
-    * 子にSprintBacklogsを持つことがある
+    * 親、もしくは子にBacklogsを持つことがある
+* BacklogMembers
 
-* ProductBacklogColumns
+* BacklogMembers To Users
+    * Member to Users
 
-* SprintBacklogColumns
-    * ProductBacklogColumnsと関連付け(Doing->Doing レビュー待ち->Doing awaiting_release ->レビュー待ち)
-
-* SprintBacklogs
-    * 親にProductBacklogsを持つ
 
 * Backlog to Users
     * BacklogとUserを繋ぐ中間テーブル
 
-* Items
+* BacklogColumns
+    * BacklogColumnsと関連付け(Doing->Doing レビュー待ち->Doing awaiting_release ->Doing)
 
-* Item to Users
+
+* BacklogItems
+    * BacklogItemsのアイテムと関連付けがあるかも
+* BacklogItem to Users
     * ItemとUserを繋ぐ中間テーブル
-* Item to Tags 
+* BacklogItem to BacklogTags 
     * ItemとTagを繋ぐ中間テーブル
 
-* Tags
+* BacklogItem to BacklogTags 
+    * ItemとTagを繋ぐ中間テーブル
+
+* BacklogTags
 
 
 * Notifications
