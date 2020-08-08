@@ -118,9 +118,9 @@ package "Scuria" {
   entity "backlog_members" {
     +id: INT
     ==
-    # backlog_rolles_id: INT [FK(backlogs,id)]
-    backlog_item_id: INT [FK(backlog_items,id)]
-    backlog_tag_id: INT [FK(backlog_tags,id)]
+    # backlog_id: INT [FK(backlog_items,id)]
+    # backlog_rolle_id: INT [FK(backlogs,id)]
+    # user_id: INT[FK(users,id)]
     update_at: datetime
     created_at: datetime
   }
@@ -137,8 +137,8 @@ package "Scuria" {
   entity "user_to_backlog_items" {
     +id: INT
     ==
-    user_id: INT [FK(users,id)]
-    backlog_item_id: INT [FK(backlog_items,id)]
+    # user_id: INT [FK(users,id)]
+    # backlog_item_id: INT [FK(backlog_items,id)]
     update_at: datetime
     created_at: datetime
   }
