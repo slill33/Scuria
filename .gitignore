@@ -11,21 +11,203 @@
 /db/*.sqlite3
 /db/*.sqlite3-journal
 
+# Ignore bundler gems.
+vendor/bundle
+
 # Ignore all logfiles and tempfiles.
-/log/*
+/log/*.log
 /tmp/*
 !/log/.keep
 !/tmp/.keep
 
+# Ignore other unneeded files.
+doc/
+*.swp
+*~
+*.orig
+.project
+.DS_Store
+.idea
+.secret
+*.rdb
+*.BAK
+etc/myenv
+/node_modules
+/yarn-error.log
+.byebug_history
+
+# Ignore setting files
+/config/database.yml
+/config/data.yml.d/*.yml
+
+### macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### rails
+*.rbc
+capybara-*.html
+.rspec
+/public/system
+/coverage/
+/spec/tmp
+*.orig
+rerun.txt
+pickle-email-*.html
+
+# TODO Comment out this rule if you are OK with secrets being uploaded to the repo
+config/initializers/secret_token.rb
+config/master.key
+# TODO Comment out this rule if environment variables can be committed
+.env
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
+# if using bower-rails ignore default bower_components path bower.json files
+/vendor/assets/bower_components
+*.bowerrc
+bower.json
+# Ignore pow environment settings
+.powenv
+# Ignore precompiled javascript packs
+/public/packs
+/public/packs-test
+/public/assets
+# Ignore yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
 
-/node_modules
-/yarn-error.log
-
-/public/assets
+### ruby
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+# Ignore Byebug command history file.
 .byebug_history
+## Specific to RubyMotion:
+.dat*
+.repl_history
+build/
+*.bridgesupport
+build-iPhoneOS/
+build-iPhoneSimulator/
+## Documentation cache and generated files:
+/.yardoc/
+/_yardoc/
+/doc/
+/rdoc/
+## Environment normalization:
+/.bundle/
+/vendor/bundle
+/lib/bundler/man/
+# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
+.rvmrc
 
-# Ignore master key for decrypting credentials and more.
-/config/master.key
+### vim
+# Swap
+[._]*.s[a-v][a-z]
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+# Session
+Session.vim
+Sessionx.vim
+# Temporary
+.netrwhist
+*~
+# Auto-generated tag files
+tags
+# Persistent undo
+[._]*.un~
+
+### Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+# Org-mode
+.org-id-locations
+*_archive
+# flymake-mode
+*_flymake.*
+# eshell files
+/eshell/history
+/eshell/lastdir
+# elpa packages
+/elpa/
+# reftex files
+*.rel
+# AUCTeX auto folder
+/auto/
+# cask packages
+.cask/
+dist/
+# Flycheck
+flycheck_*.el
+# server auth directory
+/server/
+# projectiles files
+.projectile
+# directory configuration
+.dir-locals.el
+# network security
+/network-security.data
+
+### intellij
+*.iml
+*.ipr
+*.iws
+*.cache
+/.idea/
+/out/
+
+### webpack
+webpack/node_modules
+webpack/build/*
+
+# YARD artifacts
+.yardoc
+_yardoc
+doc/
+
+/config/initializers/devise.rb
+/config/environments/development.rb
+
+/vendor/bundle
+
+#yml
+/config/*.yml
