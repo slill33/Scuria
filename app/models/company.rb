@@ -1,3 +1,3 @@
 class Company < ApplicationRecord
-    has_may :users
+    has_many :users
 end
