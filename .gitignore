@@ -211,3 +211,8 @@ doc/
 
 #yml
 /config/*.yml
+
+
+app/models/.nfs*
+db/.nfs*
+db/migrate/.nfs*
