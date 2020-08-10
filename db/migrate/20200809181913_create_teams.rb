@@ -1,7 +1,7 @@
-class CreateCompanies < ActiveRecord::Migration[5.2]
+class CreateTeams < ActiveRecord::Migration[5.2]
   def up
     execute <<-DDL
-      CREATE TABLE `companies` (
+      CREATE TABLE `teams` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
         `name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
         `created_at` datetime DEFAULT NULL,
@@ -14,7 +14,7 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
 
   def down
     execute <<-DDL
-      DROP TABLE `companies`
+      DROP TABLE `teams`
     DDL
   end
 end

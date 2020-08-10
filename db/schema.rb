@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2020_08_09_183518) do
 
-  create_table "companies", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "teams", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 64, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 2020_08_09_183518) do
     t.string "encrypted_password", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.integer "company_id", null: false, unsigned: true
+    t.integer "team_id", null: false, unsigned: true
     t.boolean "super", default: false
     t.datetime "remember_created_at"
     t.integer "sign_in_count", default: 0, null: false
