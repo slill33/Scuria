@@ -214,3 +214,8 @@ doc/
 
 #yml
 /config/*.yml
+
+
+*/.nfs*
+*/*/.nfs*
+*/*/*/.nfs*
