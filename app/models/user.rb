@@ -7,6 +7,5 @@ class User < ApplicationRecord
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :timeoutable, :trackable, invite_for: 24.hours
-         #invite_key: {team_id:""}
 
 end
