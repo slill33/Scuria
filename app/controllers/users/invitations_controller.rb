@@ -22,6 +22,10 @@ class Users::InvitationsController < Devise::InvitationsController
   def destroy
     super
   end
+
+
+  protected
+
   def configure_invite_params
     devise_parameter_sanitizer.permit(:invite, keys: [:team_id, :name, :super])
   end
