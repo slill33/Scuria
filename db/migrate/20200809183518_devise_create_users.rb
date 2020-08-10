@@ -6,7 +6,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       CREATE TABLE `users` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
         `email` varchar(255) NOT NULL,
-        `name` varchar(255) NOT NULL,
+        `name` varchar(255),
         `encrypted_password` varchar(255) NOT NULL,
         `reset_password_token` varchar(255) DEFAULT NULL,
         `reset_password_sent_at` datetime DEFAULT NULL,
