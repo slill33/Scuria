@@ -4,7 +4,8 @@ class User < ApplicationRecord
   #belongs_to :backlog_members
   
   acts_as_paranoid
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
-         :timeoutable, :trackable
+         :timeoutable, :trackable, invite_for: 24.hours
+
 end
