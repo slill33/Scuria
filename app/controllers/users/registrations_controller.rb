@@ -11,8 +11,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    @company=Company.create(name:params[:company_name])
-    params[:user][:company_id] = @company.id
+    @team=Team.create(name:params[:team_name])
+    params[:user][:team_id] = @team.id
     params[:user][:super] = 1
     super
   end
@@ -46,12 +46,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:company_id, :name, :super])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:team_id, :name, :super])
   end
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:company_id, :name, :super])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:team_id, :name, :super])
   end
 
   # The path used after sign up.

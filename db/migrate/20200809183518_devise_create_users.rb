@@ -10,7 +10,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
         `encrypted_password` varchar(255) NOT NULL,
         `reset_password_token` varchar(255) DEFAULT NULL,
         `reset_password_sent_at` datetime DEFAULT NULL,
-        `company_id` int(11) unsigned NOT NULL,
+        `team_id` int(11) unsigned NOT NULL,
         `super` bool DEFAULT FALSE,
         `remember_created_at` datetime DEFAULT NULL,
         `sign_in_count` int(11) NOT NULL DEFAULT '0',
