@@ -213,6 +213,6 @@ doc/
 /config/*.yml
 
 
-app/models/.nfs*
-db/.nfs*
-db/migrate/.nfs*
+*/.nfs*
+*/*/.nfs*
+*/*/*/.nfs*

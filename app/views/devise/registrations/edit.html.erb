@@ -4,6 +4,10 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
+    <%= f.label :super %><br />
+    <%= f.select :super, [["管理者ユーザー", 1], ["一般ユーザー", 0]],  :selected=>resource.super %>
+  </div>
+  <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name%>
   </div>
