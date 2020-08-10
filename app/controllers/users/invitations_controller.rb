@@ -16,7 +16,6 @@ class Users::InvitationsController < Devise::InvitationsController
   end
 
   def update
-    binding.pry
     super
   end
 
