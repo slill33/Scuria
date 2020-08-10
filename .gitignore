@@ -204,7 +204,7 @@ webpack/build/*
 _yardoc
 doc/
 
-/config/initializers/devise.rb
+#/config/initializers/devise.rb
 /config/environments/development.rb
 
 /vendor/bundle
