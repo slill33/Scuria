@@ -1,3 +1,3 @@
 class BacklogItem < ApplicationRecord
-  belongs_to backlog_column
+  belongs_to :backlog_column
 end
