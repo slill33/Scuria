@@ -1,0 +1,27 @@
+doctype html
+html
+  head
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" /
+    title Scuria
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  body
+    nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
+      a.navbar-brand href="#"  Scuria
+      button.navbar-toggler aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button" 
+        span.navbar-toggler-icon
+      #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
+        ul.navbar-nav
+          li.nav-item.active
+            a.nav-link.active href="#"  新規登録
+          li.nav-item
+            a.nav-link href="#"  データ一覧
+          li.nav-item.dropdown
+            a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button" 
+              | エクスポート
+            .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink" 
+              a.dropdown-item href="#"  サマリーデータ出力
+              a.dropdown-item href="#"  明細データ出力
+    = yield
