@@ -10,18 +10,33 @@ html
   body
     nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
       a.navbar-brand href="#"  Scuria
-      button.navbar-toggler aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarNavAltMarkup" data-toggle="collapse" type="button" 
-        span.navbar-toggler-icon
+      .dropdown
+        button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
+          | Product:スクラムボード1
+        .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
+          - # pathは適当 ボード実装後forで回して表示する必要あり。
+          = link_to("スクラムボード1(Product)", edit_user_registration_path, class: "dropdown-item")
+          = link_to("スクラムボード2(Sprint)", edit_user_registration_path, class: "dropdown-item")
+          = link_to("スクラムボード3(Sprint)", edit_user_registration_path, class: "dropdown-item")
       #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
         ul.navbar-nav
-          li.nav-item.active
-            a.nav-link.active href="#"  新規登録
-          li.nav-item
-            a.nav-link href="#"  データ一覧
           li.nav-item.dropdown
-            a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button" 
-              | エクスポート
-            .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink" 
-              a.dropdown-item href="#"  サマリーデータ出力
-              a.dropdown-item href="#"  明細データ出力
+            - if current_user.super == true
+              a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                | 管理者メニュー
+              .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
+                = link_to("ユーザー一覧", root_path, class: "dropdown-item")
+          li.nav-item.dropdown
+            a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+              | バックログメニュー
+            .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
+              = link_to("メンバー一覧", root_path, class: "dropdown-item")
+              = link_to("ロール変更", root_path, class: "dropdown-item")
+              = link_to("メンバー招待", root_path, class: "dropdown-item")
+          li.nav-item.dropdown
+            a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+              | ユーザー設定
+            .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
+              = link_to("設定編集", edit_user_registration_path, class: "dropdown-item")
+              = link_to("ログアウト", destroy_user_session_path, method: :delete, data: {confirm: "ログアウトしますか？"}, class: "dropdown-item")
     = yield
