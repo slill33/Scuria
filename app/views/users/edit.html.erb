@@ -1,0 +1,17 @@
+<%= form_for @user do |f| %>
+  <div class="field">
+    <%= f.label :super %><br />
+    <%= f.select :super, [["管理者ユーザー", true], ["一般ユーザー", false]],  :selected=>@user.super %>
+  </div>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name%>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div
+<% end %>

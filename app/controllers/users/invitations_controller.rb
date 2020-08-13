@@ -30,7 +30,7 @@ class Users::InvitationsController < Devise::InvitationsController
     devise_parameter_sanitizer.permit(:invite, keys: [:team_id, :name, :super])
   end
   def configure_accept_invitation_params
-    devise_parameter_sanitizer.permit(:accept_invitation, keys: [:team_id, :name])
+    devise_parameter_sanitizer.permit(:accept_invitation, keys: [:name])
   end
 end
 
