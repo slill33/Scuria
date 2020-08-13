@@ -1,0 +1,26 @@
+- provide(:title, 'All users')
+.notifications
+  - flash.each do |key, value|
+    = content_tag(:div, value, class: key)
+
+h1 All users
+= link_to "ユーザー招待", new_user_invitation_path
+ul.users
+  table
+    tr
+      th ID
+      th 名前
+      th メールアドレス
+      th 管理者
+      th 詳細
+      th 編集
+      th 削除
+    - @users.each do |user|
+      tr
+        td= user.id
+        td= user.name
+        td= user.email
+        td= user.super == true ? "管理者" : "一般"
+        td= link_to "詳細", user_path(user)
+        td= link_to "編集", edit_user_path(user)
+        td= link_to "削除", user_path(user), method: :delete
