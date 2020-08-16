@@ -1,22 +1,28 @@
 <template>
-  <div id="app">
-    <p>{{ message }}</p>
+  <div>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import UserIndexPage from 'UserIndexPage.vue'
+
+const router = new VueRouter({
+  routes: [
+    { path: '/',
+      component: UserIndexPage  }
+  ]
+})
+
+Vue.use(VueRouter)
+
 export default {
-  data: function () {
-    return {
-      message: "Hello Vue!"
-    }
-  }
+  router
 }
 </script>
 
 <style scoped>
-p {
-  font-size: 2em;
-  text-align: center;
-}
 </style>
