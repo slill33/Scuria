@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_11_144845) do
+ActiveRecord::Schema.define(version: 2020_08_19_190739) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -23,13 +23,14 @@ ActiveRecord::Schema.define(version: 2020_08_11_144845) do
   create_table "backlog_items", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.integer "point", default: 0, null: false, unsigned: true
-    t.integer "position", default: 0, null: false, unsigned: true
+    t.integer "priority", unsigned: true
     t.integer "user_id", default: 0, null: false, unsigned: true
     t.integer "backlog_column_id", default: 0, null: false, unsigned: true
     t.integer "backlog_tag_id", default: 0, null: false, unsigned: true
     t.datetime "completed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "parent_id", default: 0, null: false, unsigned: true
   end
 
   create_table "backlogs", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(version: 2020_08_11_144845) do
     t.integer "parent_id", default: 0, null: false, unsigned: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "hashcode", default: "", null: false
   end
 
   create_table "teams", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -50,7 +52,7 @@ ActiveRecord::Schema.define(version: 2020_08_11_144845) do
 
   create_table "users", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", null: false
-    t.string "name"
+    t.string "name", null: false
     t.string "encrypted_password", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
