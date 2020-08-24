@@ -4,12 +4,14 @@ class Backlog < ApplicationRecord
   has_many :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Backlog", foreign_key: "parent_id", optional: true
 
-
   before_create :ensure_super_user
   before_create :team_id_initialize
-
+  before_create :set_unique_hashcode
   before_destroy :ensure_super_user
 
+  include RandomDigestGenerator
+
+  HASHCODE_LENGTH = 16
 
   def management_team
     Team.find_by_id(self.team_id)
@@ -25,5 +27,15 @@ class Backlog < ApplicationRecord
       errors.add(:base, "ボードを操作する権限がありません.")
     end
     throw :abort if errors.messages[:base].present?
+  end
+
+  concerning :Hashcode do
+    def set_unique_hashcode
+      while true
+        hashcode = RandomDigestGenerator.random_digest(HASHCODE_LENGTH)
+        break if Backlog.where(hashcode: hashcode).blank?
+      end
+      self.hashcode = hashcode
+    end
   end
 end
