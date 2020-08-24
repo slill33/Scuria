@@ -216,6 +216,14 @@ doc/
 /config/*.yml
 
 
+.nfs*
 */.nfs*
 */*/.nfs*
 */*/*/.nfs*
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
