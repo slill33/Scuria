@@ -8,7 +8,11 @@
       <li v-for="item in list" :key='item'>{{ item }}</li>
     </draggable>
     </div>
+    <p>--------------------------------------</p>
     <p>{{$data}}</p>
+    <draggable v-model=columns[index].items tag="ul" v-for="(column, index) in columns" :key='index' class="column" group="tasks" @end="draggableEnd" :data-column-id="index">
+      <li v-for="item in column.items" :key='item.name'>{{ item.name }}</li>
+    </draggable>
   </div>
 </template>
 
@@ -22,8 +26,14 @@ export default {
   },
   data() {
     return {
+      backlog_id:1,
+      columns: [
+          {name: "todo", columnId:100, items: [{name:'task1-1'}, {name:'task1-3'}, {name:'task1-2'}]},
+          {name: "doing", columnId:200, items: [{name:'task2-1'}, {name:'task2-3'}, {name:'task2-2'}]},
+          {name: "done", columnId:300, items: [{name:'task3-1'}, {name:'task3-3'}, {name:'task3-2'}]}
+      ],
       tasks: [
-        ['task1-1', 'task1-2', 'task1-3', 'task1-4'],
+        ['task1-1', 'task1-2', 'task1-3', 'taskx'],
         ['task2-1', 'task2-2', 'task2-3', 'task2-4'],
         ['task3-1', 'task3-2', 'task3-3']
       ]
