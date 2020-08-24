@@ -1,0 +1,76 @@
+/* Material iconsを利用する */
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* 推奨サイズ */
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    text-transform: none;
+   
+    /* WebKitブラウザサポート */
+    -webkit-font-smoothing: antialiased;
+    /* Chrome、Safariサポート */
+    text-rendering: optimizeLegibility;
+   
+    /* Firefoxサポート */
+    -moz-osx-font-smoothing: grayscale;
+   
+    /* IEサポート */
+    font-feature-settings: 'liga';
+}
+/* アイコンサイズ */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+ 
+/* 背景が明るいとき用のアイコン色 */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+ 
+/* 背景が暗いとき用のアイコン色 */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+ul li {
+  display: inline-block;
+  margin: 0 .3em .3em 0;
+  padding: 0;
+}
+ul li a {
+  display: inline-block;
+  max-width: 100px;
+  height: 28px;
+  line-height: 28px;
+  padding: 0 1em;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  color: #333;
+  font-size: 13px;
+  text-decoration: none;
+  -webkit-transition: .2s;
+  transition: .2s;
+}
+ul li a:hover {
+  background-color: #3498db;
+  border: 1px solid #3498db;
+  color: #fff;
+}
+item-point{
+  height:50px;
+  width:50px;
+  border-radius:50%;
+  line-height:50px;
+  text-align:center;
+}
