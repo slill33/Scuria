@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_24_115350) do
+ActiveRecord::Schema.define(version: 2020_08_25_035123) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2020_08_24_115350) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "hashcode", default: "", null: false
+    t.integer "backlog_type_id", default: 0, null: false, unsigned: true
   end
 
   create_table "teams", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
