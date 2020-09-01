@@ -208,6 +208,7 @@ doc/
 /config/environments/development.rb
 
 /vendor/bundle
+/vendor/bin
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
