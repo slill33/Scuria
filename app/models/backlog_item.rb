@@ -5,7 +5,4 @@ class BacklogItem < ApplicationRecord
 
   validates :priority, uniqueness: { scope: [:backlog_id, :backlog_column_id] }, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  def update_priority(priority)
-    self.update(priority: priority)
-  end
 end
