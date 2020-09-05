@@ -8,6 +8,7 @@ class Backlog < ApplicationRecord
   before_create :team_id_initialize
   before_create :set_unique_hashcode
   before_destroy :ensure_super_user
+  belongs_to :backlog_type
 
   include RandomDigestGenerator
 
