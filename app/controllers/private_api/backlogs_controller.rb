@@ -95,7 +95,7 @@ module PrivateApi
     def find_backlog
       # 暫定でhashcodeにしました。
       # 適当にいじってくれれば
-      @backlog = Backlog.find_by(id: @params[:id])
+      @backlog = Backlog.find_by(id: params[:id].to_i)
     end
 
     def backlog_contents(id, hashcode)
@@ -112,7 +112,6 @@ module PrivateApi
 
           column_info
         end
-
         return {columns: columns_info}
       end
 
