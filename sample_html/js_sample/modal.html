@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="sample.css" />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script type="text/javascript" src="sample.js"></script>
+  </head>
+  <body>
+    <script>
+      sampleFunc();
+    </script>
+    <div class="container">
+      <!-- 入力フォームを２列で表示 -->
+      <input
+        type="name"
+        class="form-control mb-4"
+        placeholder="ItemName"
+        style="max-width:30rem"
+      />
+      <form class="mb-5">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="mail2">説明</label>
+            <textarea
+              class="form-control"
+              placeholder="Description"
+              style="height:6.5rem"
+            ></textarea>
+          </div>
+          <div class="form-group col-md-3">
+            <div class="right-content">
+              <label for="Point">Point</label>
+              <select class="form-control" placeholder="Point">
+                <option>Select A</option>
+                <option>Select B</option>
+              </select>
+            </div>
+            <div class="right-content">
+                <div class="column-name">
+                  作業者
+                </div>
+                <i class="material-icons md-24 column-header-icon">add</i>
+
+              <select class="form-control" placeholder="Point">
+                <option>山田</option>
+                <option>田中</option>
+              </select>
+            </div>
+
+            <div class="right-content">
+              <label for="タグ">タグ</label>
+              <select class="form-control" placeholder="Point">
+                <option>Select A</option>
+                <option>Select B</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
