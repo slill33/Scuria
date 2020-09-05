@@ -1,24 +1,5 @@
 <template>
   <div id="backlog">
-    <div class="example-modal-window">
-      <p>ボタンを押すとモーダルウィンドウが開きます</p>
-      <button @click="openModal">開く</button>
-
-      <!-- コンポーネント MyModal -->
-      <MyModal @close="closeModal" v-if="modal">
-        <!-- default スロットコンテンツ -->
-        <p>Vue.js Modal Window!</p>
-        <div>
-          <input v-model="message" />
-        </div>
-        <!-- /default -->
-        <!-- footer スロットコンテンツ -->
-        <template slot="footer">
-          <button @click="doSend">送信</button>
-        </template>
-        <!-- /footer -->
-      </MyModal>
-    </div>
     <div class="columns">
       <div
         v-for="(column, index) in columns"
@@ -53,17 +34,14 @@
 <script>
 import draggable from "vuedraggable";
 import Item from "./Item.vue";
-import MyModal from "./ItemModal.vue";
 
 export default {
   components: {
-    MyModal,
     draggable,
     Item
   },
   data() {
     return {
-      modal: true,
       message:'',
       backlogId: this.$route.params["id"],
       columns: [
@@ -74,7 +52,7 @@ export default {
           items: [
             {
               itemId: 1,
-              name: "task1-1",
+              name: "task1-3",
               tags: [
                 { name: "aaaa", tagId: 1 },
                 { name: "iii", tagId: 2 }
