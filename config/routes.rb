@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'pages/index'
   root 'pages#index'
+  resources :backlogs
   devise_for :users, controllers:{
    confirmations: 'users/confirmations',
    passwords: 'users/passwords',
