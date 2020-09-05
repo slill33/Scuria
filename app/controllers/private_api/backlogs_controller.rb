@@ -1,5 +1,3 @@
-require "pry"
-
 module PrivateApi
   class BacklogsController < ApplicationController
     COLUMN_KEYS = %i(id name color)
@@ -16,7 +14,7 @@ module PrivateApi
     def get_columns_and_items
       render json: {
         status:  200,
-        message: get_columns_and_association_items(COLUMN_KEYS, ITEM_KEYS, TAG_KEYS, USER_KEYS)
+        message: get_columns_and_association_items
       }.to_json
     rescue
       render json: "internal server error", status: :internal_server_error
@@ -105,13 +103,12 @@ module PrivateApi
     end
 
     concerning :GetMethod do
-      def get_columns_and_association_items(column_keys, item_keys, tag_keys, user_keys)
-        @backlog = Backlog.find(1)
+      def get_columns_and_association_items
         columns_info = @backlog.backlog_columns.map do |column|
-          column_info = column_keys.map(&:intern).reduce({}) {|obj, key|
+          column_info = COLUMN_KEYS.reduce({}) {|obj, key|
             obj.tap {|me| me[key] = column[key] }
           }
-          column_info[:items] = get_items_by_column(column, item_keys, tag_keys, user_keys)
+          column_info[:items] = get_items_by_column(column)
 
           column_info
         end
@@ -119,13 +116,13 @@ module PrivateApi
         return {columns: columns_info}
       end
 
-      def get_items_by_column(column, keys, tag_keys, user_keys)
+      def get_items_by_column(column)
         items_info = column.backlog_items.map do |item|
-          item_info = keys.map(&:intern).reduce({}) {|obj, key|
+          item_info = ITEM_KEYS.reduce({}) {|obj, key|
             obj.tap {|me| me[key] = item[key]}
           }
-          item_info[:tags]  = get_tags(item, tag_keys)
-          item_info[:users] = get_users(item, user_keys)
+          item_info[:tags]  = get_tags(item)
+          item_info[:users] = get_users(item)
 
           item_info
         end
@@ -133,13 +130,13 @@ module PrivateApi
         return items_info
       end
 
-      def get_tags(item, keys)
+      def get_tags(item)
         # TODO: uncomment out 
         #normalize_update_infos(item.backlog_tags, keys)
         return []
       end
 
-      def get_users(item, keys)
+      def get_users(item)
         # TODO: uncomment out 
         #normalize_update_infos(item.users, keys)
         return []
