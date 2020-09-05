@@ -95,7 +95,7 @@ module PrivateApi
     def find_backlog
       # 暫定でhashcodeにしました。
       # 適当にいじってくれれば
-      @backlog = Backlog.find_by(hashcode: @params[:hashcode])
+      @backlog = Backlog.find_by(id: @params[:id])
     end
 
     def backlog_contents(id, hashcode)
