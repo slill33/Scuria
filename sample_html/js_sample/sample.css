@@ -51,8 +51,8 @@
   color: rgba(255, 255, 255, 0.3);
 }
 /* ---------------------------tag用---------------------------*/
-.tag{
-  margin: 0.2rem 0rem 0rem 0rem; 
+.tag {
+  margin: 0.2rem 0rem 0rem 0rem;
   display: inline-block;
   max-width: 3rem;
   height: 1.3rem;
@@ -82,44 +82,44 @@
   max-width: 20rem;
 }
 
-.item-header{
-  display:flex;
-  justify-content:flex-end;
-  padding:0.5rem;
+.item-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem;
 }
-.item-tags{
+.item-tags {
   margin-right: auto;
 }
-.item-assignee{
+.item-assignee {
   font-size: 0.75em;
-  display:flex;
+  display: flex;
 }
-.item-header-icon{
+.item-header-icon {
   margin-bottom: auto;
-  margin-top: auto; 
-  margin-left:0.5rem;
+  margin-top: auto;
+  margin-left: 0.5rem;
 }
-.item-header div{
+.item-header div {
   margin-bottom: auto;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
-.item-assignee-list{
+.item-assignee-list {
   margin-bottom: auto;
   margin-top: auto;
   margin-right: 0.5rem;
-  text-align:right;
+  text-align: right;
 }
 
-.item-body{
-  padding:0.8rem;
+.item-body {
+  padding: 0.8rem;
 }
 
 .items .item:first-child {
   margin: 0rem 0rem 1rem 0rem;
 }
-.item-name{
-  float:left;
+.item-name {
+  float: left;
   max-width: 14rem;
 }
 /* ---------------------------column用---------------------------*/
@@ -128,28 +128,72 @@
   align-items: flex-start;
 }
 .column {
-  margin: 0rem 0.3rem; 
+  margin: 0rem 0.3rem;
   width: 20rem;
   background-color: #28a745;
 }
-.column-header{
-  display:flex;
+.column-header {
+  display: flex;
 }
-.column-name{
-  float:left;
+.column-name {
+  float: left;
 }
-.column-header-icon{
+.column-header-icon {
   margin-left: auto;
 }
 
 /* ---------------------------全体用---------------------------*/
 #app {
-  background-color:#C0C0C0;
-  margin:1rem;
+  background-color: #c0c0c0;
+  margin: 1rem;
 }
 
 /* ---------------------------modal---------------------------*/
 
-.right-content {
-  margin:0.5rem 0
+.modal-right-content {
+  margin: 0.5rem 0;
+}
+.modal-right-content-label-box {
+  display: flex;
+  margin: 0.2rem;
+}
+.modal-right-content-label-box > p{
+  margin:0;
+}
+.modal-right-content-form-box {
+  display: flex;
+}
+.modal-right-content-form-box > i{
+  margin-top:auto; margin-bottom: auto;
+}
+
+
+.modal-assignee {
+  float: left;
+}
+.modal-tag {
+  display: inline-block;
+  height: 1.7rem;
+  padding: 0 0.3rem;
+  background-color: #fff;
+  border: 0.01rem solid #aaa;
+  border-radius: 0.1rem;
+  white-space: nowrap;
+  text-overflow: ellipsisu;
+  overflow: hidden;
+  color: #333;
+  font-size: 1em;
+  text-decoration: none;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+.modal-tag:hover {
+  background-color: #3498db;
+  border: 1px solid #3498db;
+  color: #fff;
+}
+.setting-modal-tag {
+  background-color: #3498db;
+  border: 1px solid #3498db;
+  color: #fff;
 }
