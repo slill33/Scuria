@@ -73,3 +73,4 @@ gem 'bootstrap', '~> 4.1.1'
 gem "jquery-rails"
 gem 'slim-rails', '3.1.3'
 gem 'webpacker', github: "rails/webpacker"
+gem 'material_icons'
