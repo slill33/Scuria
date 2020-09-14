@@ -18,7 +18,7 @@
             class="form-control mb-4"
             placeholder="ItemName"
             style="max-width:30rem"
-            v-model="item.name"
+            v-model="itemName"
           />
           <div class="modal-content-2rows">
             <div class="form-row">
@@ -31,7 +31,7 @@
                   <label for="Point">Point</label>
                   <select class="form-control" placeholder="Point" v-model="item.point">
                     <option :value="0">選択してください</option>
-                    <option :value="n" v-for="n of 89" :key="n">{{n}}</option>
+                    <option :value="Number(n)" v-for="n of 89" :key="n">{{n}}</option>
                   </select>
                 </div>
                 <div class="modal-right-content">
@@ -39,20 +39,20 @@
                     <p>作業者</p>
                     <i class="material-icons md-24">add</i>
                   </div>
-                  <div v-if="item.users.length>0" class="item-tags">
+                  <div v-if="item.users.length>0">
                     <!-- <span v-for="tagId in item.tags" :key="tagId" class="tag">{{tags[tagId].name}}</span> -->
                     <div
                       v-for="(userId, index) in item.users"
                       class="modal-right-content-form-box"
                       :key="userId + '_' +index"
                     >
-                        <select class="form-control" placeholder="作業者" v-model="item.users[index]">
-                          <option
-                            v-for="(value, key) in users"
-                            :key="value.name"
-                            :value="key"
-                          >{{value.name}}</option>
-                        </select>
+                      <select class="form-control" placeholder="作業者" v-model="item.users[index]">
+                        <option
+                          v-for="(value, key) in users"
+                          :key="value.name"
+                          :value="Number(key)"
+                        >{{value.name}}</option>
+                      </select>
                       <i class="material-icons md-24 column-header-icon">clear</i>
                     </div>
                   </div>
@@ -98,7 +98,25 @@ export default {
       itemUsers: ([] = this.item.users)
     };
   },
-  watch: {}
+  watch: {
+    itemUsers: {
+      handler: function(val) {
+        if (val.length != Array.from(new Set(val)).length) {
+          this.item.users = Array.from(new Set(val));
+        }
+      }
+    }
+  },
+  computed: {
+    itemName: {
+      get() {
+        return this.$props.item.name;
+      },
+      set(value){
+        this.$emit('change', value)
+      }
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
