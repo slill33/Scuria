@@ -1,7 +1,8 @@
 class User < ApplicationRecord
-  #has_many :backlog_items, through: :user_to_backlog_items
   has_many :backlogs
   belongs_to :team
+  has_many :user_to_backlog_items
+  has_many :backlog_items, through: :user_to_backlog_items
   #belongs_to :backlog_members
 
   acts_as_paranoid
