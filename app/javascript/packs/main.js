@@ -6,15 +6,20 @@
 // All it does is render <div>Hello Vue</div> at the bottom of the page.
 
 import Vue from "vue";
+import Vuex from "vuex";
 import App from "../app.vue";
-
+import router from "./router";
+import store from "./store";
+import VueRouter from "vue-router";
+Vue.use(VueRouter);
 document.addEventListener("DOMContentLoaded", () => {
-  const app = new Vue({
-    render: h => h(App)
-  }).$mount();
-  document.body.appendChild(app.$el);
-
-  console.log(app);
+  new Vue({
+    el: "#app",
+    router,
+    store,
+    components: { App },
+    template: "<App/>"
+  });
 });
 
 // The above code uses Vue without the compiler, which means you cannot
