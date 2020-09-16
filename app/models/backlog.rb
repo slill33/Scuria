@@ -1,10 +1,11 @@
 class Backlog < ApplicationRecord
   belongs_to :user
-  has_many :backlog_columns
-  has_many :backlog_tags
-  has_many :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
+  has_many   :backlog_columns
+  has_many   :backlog_tags
+  has_many   :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Backlog", foreign_key: "parent_id", optional: true
   belongs_to :backlog_type
+  has_many   :backlog_items
 
   before_create :ensure_super_user
   before_create :team_id_initialize
