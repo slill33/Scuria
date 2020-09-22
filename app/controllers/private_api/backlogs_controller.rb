@@ -22,49 +22,14 @@ module PrivateApi
 
 
     def update_item_location
-      update_target_item = BacklogItem.find_by_id(@params[:backlog_item_id])
-      new_column_id      = @params[:new_column_id]
-      new_priority       = @params[:new_priority]
-      old_column_id      = update_target_item.column_id
-      old_priority       = update_target_item.priority
+      status = _update_item_location
 
-      old_column_items = BacklogColumn.find_by_id(old_column_id).backlog_items
-      priority_max = old_column_items.maximum(:priority)
-      old_column_items.where(priority: new_priority..priority_max).order(priority: "DESC")
-
-      # カラムをまたいだ変更があった場合インクリメント
-      old_column_item_ids = old_column_items.where(priority: new_priority..priority_max).pluck(:id)
-      BacklogItem.icrement_counter(:priority, item_ids)
-
-      if old_column_id == new_column_id then
-        # カラムをまたいだ変更がなかった場合
-        ## priority:1以上 が移動した場合インクリメント
-        if new_priority > old_priority then
-          old_column_item_ids = old_column_items.where(priority: (old_priority+1)..new_priority).pluck(:id)
-          BacklogItem.decrement_counter(:priority, old_column_item_ids)
-        elsif old_priority > new_priority then
-          old_column_item_ids = old_column_items.where(priority: new_priority..(old_priority-1)).pluck(:id)
-          BacklogItem.increment_counter(:priority, old_column_item_ids)
-        end
+      case status
+      when 200 then
+        render json: { status: 200, message: "ok" }.to_json
       else
-        new_column_items = BacklogColumn.find_by_id(new_column_id).backlog_items
-
-        old_column_item_ids = old_column_items.where(priority: (old_priority+1)..old_column_items.maximum(:priority))
-        new_column_item_ids = new_column_items.where(priority: new_priority..new_column_items.maximum(:priority))
-
-        BacklogItem.decrement_counter(:priority, old_column_item_ids)
-        BacklogItem.increment_counter(:priority, new_column_item_ids)
+        render status: :internal_server_error, json: {status: 500, message: 'Internal Server Error'}.to_json
       end
-
-      # TODO: after_update other backlog_item
-      update_target_item.update(backlog_column_id: new_column_id, priority: new_priority)
-
-      render json: {
-        status: 200,
-        message: "ok"
-      }.to_json
-    rescue
-      render json: "internal server error", status: :internal_server_error
     end
 
     def update_item_info
@@ -145,6 +110,62 @@ module PrivateApi
     concerning :UpdateMethod do
       #def update_backlog_items_priority(old_column_id, new_column_id, priority)
       #end
+      def _update_item_location
+        update_target_item = BacklogItem.find_by_id(@params[:backlog_item_id])
+        new_column_id      = @params[:new_column_id]
+        old_column_id      = update_target_item.column_id
+        @new_priority      = @params[:new_priority]
+        @old_priority      = update_target_item.priority
+
+        begin
+          @old_column_items = BacklogColumn.find_by_id(old_column_id).backlog_items
+          priority_max = old_column_items.maximum(:priority)
+
+          ActiveRecord::Base.transaction do
+            if old_column_id != new_column_id then
+              update_priority_across_columns(new_column_id)
+            elsif @new_priority > @old_priority then
+              raise_priority
+            elsif @old_priority > @new_priority then
+              lower_priority
+            end
+
+            # TODO: after_update other backlog_item
+            update_target_item.update(backlog_column_id: new_column_id, priority: @new_priority)
+          end
+
+          return 200
+        rescue
+          return 500
+        end
+      end
+
+      def update_priority_across_columns(new_column_id)
+        new_column_items = BacklogColumn.find_by_id(new_column_id).backlog_items
+
+        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority+1, @old_column_items.maximum(:priority)))
+        increment_backlog_items_priority(column_item_ids(new_column_items, @new_priority, new_column_items.maximum(:priority)))
+      end
+
+      def raise_priority
+        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority+1, @new_priority))
+      end
+
+      def lower_priority
+        increment_backlog_items_priority(column_item_ids(@old_column_items, @new_priority, @old_priority-1))
+      end
+
+      def column_item_ids(column_items, beginning_of_range, end_of_range)
+        return column_items.where(priority: beginning_of_range..end_of_range).pluck(:id)
+      end
+
+      def increment_backlog_items_priority(target_ids)
+        BacklogItem.increment_counter(:priority, target_ids)
+      end
+
+      def decrement_backlog_items_priority(target_ids)
+        BacklogItem.decrement_counter(:priority, target_ids)
+      end
     end
 
     def backlog_item_params
