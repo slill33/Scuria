@@ -1,6 +1,7 @@
 <template>
   <div class="app">
     <div id="backlog">
+      <ItemModal v-if="modalFlag"></ItemModal>
       <draggable v-model="columns" class="columns" group="columns" @end="moveColumn">
         <Column
           v-for="(column, index) in columns"
@@ -8,7 +9,7 @@
           class="card text-white mb-3 column"
           v-bind:style="{ 'background-color': column.color}"
           :column="column"
-          :index="index"
+          :columnIndex="index"
         ></Column>
       </draggable>
       <span>{{$store.state}}</span>
@@ -20,20 +21,23 @@
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import Column from "./Column.vue";
+import ItemModal from "./ItemModal.vue";
 import axios from "axios";
 export default {
   components: {
     draggable,
-    Column
+    Column,
+    ItemModal
   },
   data() {
     return {};
   },
   mounted() {
-    this.getBacklog(this.$route.params["id"]);
+    this.setBacklogId(this.$route.params["id"]);
+    this.getBacklog();
   },
   computed: {
-    //...mapState(["columns"]),
+    ...mapState(["modalFlag", "modalInfo"]),
     columns: {
       get() {
         return this.$store.state.columns;
@@ -44,7 +48,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["moveColumn", "getBacklog", "setColumns"])
+    ...mapActions(["moveColumn", "getBacklog", "setColumns", "setBacklogId"])
   }
 };
 </script>
