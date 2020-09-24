@@ -2,7 +2,10 @@
   <div>
     <div class="card-header column-header">
       <div class="column-name">{{column.name}}</div>
-      <i class="material-icons md-24 column-header-icon">settings</i>
+      <i
+        class="material-icons md-24 column-header-icon"
+        @click="editColumn({index:columnIndex,column:column})"
+      >settings</i>
     </div>
     <draggable
       v-model="column.items"
@@ -44,7 +47,7 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    ...mapActions(["moveItem", "newItem"])
+    ...mapActions(["moveItem", "newItem", "editColumn"])
   }
 };
 </script>

@@ -31,7 +31,7 @@ export default {
     commit(MutationTypes.SET_COLUMNS, val);
   },
   editItem({ commit }, val) {
-    var modalInfo = {
+    var itemModalInfo = {
       new: false,
       columnIndex: val.columnIndex,
       itemIndex: val.itemIndex,
@@ -39,10 +39,10 @@ export default {
       tagField: false,
       item: JSON.parse(JSON.stringify(val.item))
     };
-    commit(MutationTypes.SET_MODAL_INFO, modalInfo);
+    commit(MutationTypes.SET_ITEM_MODAL_INFO, itemModalInfo);
   },
-  closeModal({ commit }) {
-    commit(MutationTypes.CLOSE_MODAL);
+  closeItemModal({ commit }) {
+    commit(MutationTypes.CLOSE_ITEM_MODAL);
   },
   addTag({ commit }, name) {
     var newTag = {
@@ -71,26 +71,26 @@ export default {
   changeUser({ commit }, val) {
     commit(MutationTypes.CHANGE_USER, val);
   },
-  itemUpdate({ commit, state }) {
-    commit(MutationTypes.FORMAT_MODAL_INFO);
-    console.log(state.modalInfo.item);
+  updateItem({ commit, state }) {
+    commit(MutationTypes.FORMAT_ITEM_MODAL_INFO);
+    console.log(state.itemModalInfo.item);
     //api
     commit(MutationTypes.ITEM_UPDATE_SUCCESS);
   },
-  itemCreate({ commit, state }) {
+  createItem({ commit, state }) {
     //api
     commit(MutationTypes.ITEM_CREATE_SUCCESS);
   },
-  itemDelete({ commit, state }) {
+  deleteItem({ commit, state }) {
     //api
     const ans = confirm("本当に削除しますか？");
     if (ans) commit(MutationTypes.ITEM_DELETE_SUCCESS);
   },
   editItemName({ commit }, name) {
-    commit(MutationTypes.EDIT_ITEM_NAME, name);
+    commit(MutationTypes.SET_ITEM_MODAL_INFO_NAME, name);
   },
   newItem({ commit }, index) {
-    var modalInfo = {
+    var itemModalInfo = {
       new: true,
       columnIndex: index,
       itemIndex: "",
@@ -104,6 +104,48 @@ export default {
         point: ""
       }
     };
-    commit(MutationTypes.SET_MODAL_INFO, modalInfo);
+    commit(MutationTypes.SET_ITEM_MODAL_INFO, itemModalInfo);
+  },
+  setColumnColor({ commit }, val) {
+    commit(MutationTypes.SET_COLUMN_COLOR, val.hex);
+  },
+  closeColumnModal({ commit }) {
+    commit(MutationTypes.CLOSE_COLUMN_MODAL);
+  },
+  editColumn({ commit }, val) {
+    var columnModalInfo = {
+      new: false,
+      columnIndex: val.index,
+      column: JSON.parse(JSON.stringify(val.column))
+    };
+    commit(MutationTypes.EDIT_COLUMN_MODAL_INFO, columnModalInfo);
+  },
+  newColumn({ commit }) {
+    var columnModalInfo = {
+      new: true,
+      columnIndex: "",
+      column: {
+        name: "",
+        color: "#4D4D4D",
+        items: []
+      }
+    };
+    commit(MutationTypes.EDIT_COLUMN_MODAL_INFO, columnModalInfo);
+  },
+  editColumnName({ commit }, name) {
+    commit(MutationTypes.SET_COLUMN_MODAL_INFO_NAME, name);
+  },
+  updateColumn({ commit, state }) {
+    //api
+    commit(MutationTypes.COLUMN_UPDATE_SUCCESS);
+  },
+  createColumn({ commit, state }) {
+    //api
+    commit(MutationTypes.COLUMN_CREATE_SUCCESS);
+  },
+  deleteColumn({ commit, state }) {
+    //api
+    const ans = confirm("本当に削除しますか？");
+    if (ans) commit(MutationTypes.COLUMN_DELETE_SUCCESS);
   }
 };

@@ -6,8 +6,8 @@ Vue.use(Vuex);
 const state = {
   backlogId: "",
   columns: [],
-  modalFlag: false,
-  modalInfo: {},
+  itemModalFlag: false,
+  itemModalInfo: {},
   users: {
     1: { name: "UserA" },
     2: { name: "UserB" },
@@ -19,6 +19,16 @@ const state = {
     2: { name: "tagB" },
     3: { name: "tagC" },
     4: { name: "tagD" }
+  },
+  columnModalFlag: false,
+  columnModalInfo: {
+    new: true,
+    columnIndex: 1,
+    column: {
+      name: "sample",
+      color: "#FDA1FF",
+      items: []
+    }
   }
 };
 

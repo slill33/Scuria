@@ -1,15 +1,14 @@
 <template>
   <transition name="modal" appear>
-    <div class="modal modal-overlay" @click.self="closeModal()">
+    <div class="modal modal-overlay" @click.self="closeItemModal()">
       <div class="modal-window">
         <div class="modal-content">
-          <!-- 入力フォームを２列で表示 -->
           <input
             type="name"
             class="form-control mb-4"
             placeholder="ItemName"
             style="max-width:30rem"
-            v-bind:value="modalInfo.item.name"
+            v-bind:value="itemModalInfo.item.name"
             @input="editItemName($event.target.value)"
           />
           <div class="modal-content-2rows">
@@ -24,7 +23,7 @@
                   <select
                     class="form-control"
                     placeholder="Point"
-                    v-bind:value="modalInfo.item.point"
+                    v-bind:value="itemModalInfo.item.point"
                     @change="editPoint($event.target.value)"
                   >
                     <option :value="0">選択してください</option>
@@ -36,17 +35,17 @@
                     <p>作業者</p>
                     <i class="material-icons md-24" @click="addUser()">add</i>
                   </div>
-                  <div v-show="modalInfo.item.users.length>0">
+                  <div v-show="itemModalInfo.item.users.length>0">
                     <!-- <span v-for="tagId in item.tags" :key="tagId" class="tag">{{tags[tagId].name}}</span> -->
                     <div
-                      v-for="(userId, index) in modalInfo.item.users"
+                      v-for="(userId, index) in itemModalInfo.item.users"
                       class="modal-right-content-form-box"
                       :key="userId + '_' +index"
                     >
                       <select
                         class="form-control"
                         placeholder="作業者"
-                        v-bind:value="modalInfo.item.users[index]"
+                        v-bind:value="itemModalInfo.item.users[index]"
                         @change="changeUser({userId:$event.target.value,index:index})"
                       >
                         <option
@@ -69,22 +68,22 @@
                       v-for="(value, key) in tags"
                       :key="key"
                       class="modal-tag"
-                      v-bind:class="{'setting-modal-tag':modalInfo.item.tags.indexOf(Number(key))!= -1}"
+                      v-bind:class="{'setting-modal-tag':itemModalInfo.item.tags.indexOf(Number(key))!= -1}"
                       @click="toggleTag(key)"
                     >{{value.name}}</span>
                     <i class="material-icons md-24" @click="showTagField">add</i>
                   </div>
-                  <div class="modal-right-content-form-box" v-show="modalInfo.tagField">
+                  <div class="modal-right-content-form-box" v-show="itemModalInfo.tagField">
                     <input
                       type="text"
                       id="text1"
                       class="form-control"
-                      v-bind:value="modalInfo.tagName"
+                      v-bind:value="itemModalInfo.tagName"
                       @input="setTagName($event.target.value)"
                     />
                     <i
                       class="material-icons md-24 column-header-icon"
-                      @click="addTag(modalInfo.tagName)"
+                      @click="addTag(itemModalInfo.tagName)"
                     >check</i>
                   </div>
                 </div>
@@ -96,20 +95,20 @@
           <button
             type="button"
             class="btn btn-danger mr-auto"
-            v-show="modalInfo.new===false"
-            @click="itemDelete()"
+            v-show="itemModalInfo.new===false"
+            @click="deleteItem()"
           >削除</button>
           <button
             type="button"
             class="btn btn-primary"
-            v-show="modalInfo.new===false"
-            @click="itemUpdate()"
+            v-show="itemModalInfo.new===false"
+            @click="updateItem()"
           >変更</button>
           <button
             type="button"
             class="btn btn-primary"
-            v-show="modalInfo.new"
-            @click="itemCreate()"
+            v-show="itemModalInfo.new"
+            @click="createItem()"
           >作成</button>
         </footer>
       </div>
@@ -121,7 +120,7 @@ import { mapState, mapActions } from "vuex";
 export default {
   methods: {
     ...mapActions([
-      "closeModal",
+      "closeItemModal",
       "addTag",
       "toggleTag",
       "setTagName",
@@ -129,15 +128,15 @@ export default {
       "editPoint",
       "addUser",
       "changeUser",
-      "itemUpdate",
-      "itemCreate",
-      "itemDelete",
+      "updateItem",
+      "createItem",
+      "deleteItem",
       "editItemName"
     ])
   },
   watch: {},
   computed: {
-    ...mapState(["tags", "users", "modalInfo", "tagField"])
+    ...mapState(["tags", "users", "itemModalInfo", "tagField"])
   }
 };
 </script>
