@@ -1,6 +1,7 @@
 class BacklogItem < ApplicationRecord
   belongs_to :backlog_column
   belongs_to :parent,   class_name: "BacklogItem", foreign_key: "parent_id", optional: true
+  has_many   :backlog_item_comments
   has_many   :children, class_name: "BacklogItem", foreign_key: "parent_id", dependent: :destroy
   has_many   :backlog_item_to_backlog_tags
   has_many   :backlog_tags, through: :backlog_item_to_backlog_tags
