@@ -8,7 +8,7 @@ class Backlog < ApplicationRecord
   has_many   :backlog_items
 
   #before_create :ensure_super_user
-  before_create :team_id_initialize
+  #before_create :team_id_initialize
   before_create :set_unique_hashcode
   #before_destroy :ensure_super_user
 
@@ -22,14 +22,14 @@ class Backlog < ApplicationRecord
 
   private
   def team_id_initialize
-    self.team_id = self.user.team_id
+    #self.team_id = self.user.team_id
   end
 
   def ensure_super_user
-    unless self.user.super
-      errors.add(:base, "ボードを操作する権限がありません.")
-    end
-    throw :abort if errors.messages[:base].present?
+    #unless self.user.super
+    #  errors.add(:base, "ボードを操作する権限がありません.")
+    #end
+    #throw :abort if errors.messages[:base].present?
   end
 
   concerning :Hashcode do
