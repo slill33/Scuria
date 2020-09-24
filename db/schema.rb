@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_05_134651) do
+ActiveRecord::Schema.define(version: 2020_09_16_190038) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -40,6 +40,7 @@ ActiveRecord::Schema.define(version: 2020_09_05_134651) do
     t.datetime "updated_at"
     t.integer "parent_id", default: 0, null: false, unsigned: true
     t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.text "description", null: false
   end
 
   create_table "backlog_tags", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -76,7 +77,7 @@ ActiveRecord::Schema.define(version: 2020_09_05_134651) do
 
   create_table "users", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", null: false
-    t.string "name", null: false
+    t.string "name"
     t.string "encrypted_password", null: false
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
