@@ -15,10 +15,10 @@ module PrivateApi
       render json: {
         status:  200,
         message: {
-          columns: get_columns_and_association_items
+          columns: get_columns_and_association_items,
+          tags: get_normalize_tag_records,
+          users: get_normalize_user_records
         },
-        tags: get_normalize_tag_records,
-        users: get_normalize_user_records
       }.to_json
     rescue
       render json: "internal server error", status: :internal_server_error
