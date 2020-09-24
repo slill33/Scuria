@@ -146,7 +146,7 @@ module PrivateApi
       end
 
 
-      %w(Tag User).each do |model_name|
+      %w(BacklogTag User).each do |model_name|
         define_method("get_normalize_#{model_name.underscore}_records") do |root_key: :id, attr_names: %i(name)|
           normalize_obj_records_by_backlog_id(root_key, attr_names, model_name)
         end
