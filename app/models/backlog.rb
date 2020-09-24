@@ -7,10 +7,10 @@ class Backlog < ApplicationRecord
   belongs_to :backlog_type
   has_many   :backlog_items
 
-  before_create :ensure_super_user
+  #before_create :ensure_super_user
   before_create :team_id_initialize
   before_create :set_unique_hashcode
-  before_destroy :ensure_super_user
+  #before_destroy :ensure_super_user
 
   include RandomDigestGenerator
 
