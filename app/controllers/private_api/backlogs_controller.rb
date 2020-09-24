@@ -135,11 +135,11 @@ module PrivateApi
       def additional_obj(symbolize_key, obj)
         case symbolize_key
         when :tags  then
-          #Tag.find(backlog_id: @backlog.id).pluck(:id)
+          #Tag.where(backlog_id: @backlog.id).pluck(:id)
           # TODO: Tagモデル追加マージ後に、上をアンコメントアウトして、下を消す
           []
         when :users then
-          #User.find(backlog_id: @backlog.id).pluck(:id)
+          #Team.find_by_id(@backlog.team_id).users.pluck(:id)
           # TODO: Userモデル修正マージ後に、上をアンコメントアウトして、下を消す
           []
         when :items then
