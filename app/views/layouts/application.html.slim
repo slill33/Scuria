@@ -13,12 +13,11 @@ html
         a.navbar-brand href="#"  Scuria
         .dropdown
           button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
-            | Product:スクラムボード1
-          .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
-            - # pathは適当 ボード実装後forで回して表示する必要あり。
-            = link_to("スクラムボード1(Product)", edit_user_registration_path, class: "dropdown-item")
-            = link_to("スクラムボード2(Sprint)", edit_user_registration_path, class: "dropdown-item")
-            = link_to("スクラムボード3(Sprint)", edit_user_registration_path, class: "dropdown-item")
+            = current_backlog_name
+          - if current_backlogs.length > 0
+            .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
+              - current_backlogs.each do |backlog|
+                = link_to(backlog.name, backlog_path(backlog.id), class: "dropdown-item", "data-turbolinks": false)
         #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
           ul.navbar-nav
             li.nav-item.dropdown
@@ -32,8 +31,9 @@ html
                 | バックログメニュー
               .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
                 = link_to("メンバー一覧", root_path, class: "dropdown-item")
-                = link_to("ロール変更", root_path, class: "dropdown-item")
-                = link_to("メンバー招待", root_path, class: "dropdown-item")
+                - if current_user.super
+                  = link_to("ロール変更", root_path, class: "dropdown-item")
+                  = link_to("メンバー招待", root_path, class: "dropdown-item")
             li.nav-item.dropdown
               a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 | ユーザー設定
