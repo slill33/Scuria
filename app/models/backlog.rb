@@ -1,5 +1,4 @@
 class Backlog < ApplicationRecord
-  belongs_to :user
   has_many   :backlog_columns
   has_many   :backlog_tags
   has_many   :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
