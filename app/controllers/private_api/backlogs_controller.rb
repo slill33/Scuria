@@ -16,7 +16,7 @@ module PrivateApi
         status:  200,
         message: {
           columns: get_columns_and_association_items,
-          tags: get_normalize_tag_records,
+          tags: get_normalize_backlog_tag_records,
           users: get_normalize_user_records
         },
       }.to_json
@@ -146,21 +146,28 @@ module PrivateApi
       end
 
 
-      %w(Tag User).each do |model_name|
-        define_method("get_normalize_#{model_name.underscore}_records") do |root_key: :id, attr_names: %i(name)|
-          normalize_obj_records_by_backlog_id(root_key, attr_names, model_name)
+      %w(backlog_tag user).each do |model_name|
+        define_method("get_normalize_#{model_name}_records") do |root_key: :id, attr_names: %i(name)|
+          objs = send("#{model_name}_objs")
+          normalize_obj_records(objs, root_key, attr_names)
         end
       end
 
-      def normalize_obj_records_by_backlog_id(root_key, attr_names, model_name)
-        objs = model_name.constantize.where(backlog_id: @backlog.id).pluck(root_key, *attr_names)
-
-        return objs.reduce({}) {|memo, obj|
+      def normalize_obj_records(objs, root_key, attr_names)
+        return objs.pluck(root_key, *attr_names).reduce({}) {|memo, obj|
           h = {}
           attr_names.each.with_index(1) {|attr_name, idx| h["#{attr_name}".intern] = obj[idx] }
 
           memo.tap {|me| me["#{obj.first}".intern] = h }
         }
+      end
+
+      def backlog_tag_objs
+        return BacklogTag.where(backlog_id: @backlog.id)
+      end
+
+      def user_objs
+        return @backlog.users
       end
     end
 
