@@ -5,55 +5,55 @@ export const mutations = {
     state.backlogId = id;
   },
   [MUTATION_TYPES.GET_BACKLOG_SUCCESS](state, posts) {
-    state.columns = [
-      {
-        name: "Todo",
-        id: 1,
-        color: "#194d33",
-        items: [
-          {
-            id: 1,
-            name: "task1-1",
-            tags: [1, 2],
-            users: [1, 2],
-            point: 1
-          },
-          { id: 2, name: "task1-3", tags: [], users: [], point: 1 },
-          { id: 3, name: "task1-2", tags: [], users: [], point: 100 }
-        ]
-      },
-      {
-        name: "Doing",
-        id: 2,
-        color: "#653294",
-        items: [
-          {
-            id: 4,
-            name: "task1-1",
-            tags: [3, 4],
-            users: [3, 4],
-            point: 0
-          },
-          { id: 5, name: "task1-3", tags: [], users: [], point: 10 },
-          { id: 6, name: "task1-2", tags: [], users: [], point: 100 }
-        ]
-      },
-      {
-        name: "Done",
-        id: 3,
-        color: "#FCC400",
-        items: [
-          {
-            id: 7,
-            name: "task1-1",
-            tags: [3, 4],
-            users: [3, 4],
-            point: 0
-          },
-          { id: 8, name: "task1-3", tags: [], users: [], point: 10 },
-          { id: 9, name: "task1-2", tags: [], users: [], point: 100 }
-        ]
-      }
+    // state.columns = [
+    //   {
+    //     name: "Todo",
+    //     id: 1,
+    //     color: "#194d33",
+    //     items: [
+    //       {
+    //         id: 1,
+    //         name: "task1-1",
+    //         tags: [1, 2],
+    //         users: [1, 2],
+    //         point: 1
+    //       },
+    //       { id: 2, name: "task1-3", tags: [], users: [], point: 1 },
+    //       { id: 3, name: "task1-2", tags: [], users: [], point: 100 }
+    //     ]
+    //   },
+    //   {
+    //     name: "Doing",
+    //     id: 2,
+    //     color: "#653294",
+    //     items: [
+    //       {
+    //         id: 4,
+    //         name: "task1-1",
+    //         tags: [3, 4],
+    //         users: [3, 4],
+    //         point: 0
+    //       },
+    //       { id: 5, name: "task1-3", tags: [], users: [], point: 10 },
+    //       { id: 6, name: "task1-2", tags: [], users: [], point: 100 }
+    //     ]
+    //   },
+    //   {
+    //     name: "Done",
+    //     id: 3,
+    //     color: "#FCC400",
+    //     items: [
+    //       {
+    //         id: 7,
+    //         name: "task1-1",
+    //         tags: [3, 4],
+    //         users: [3, 4],
+    //         point: 0
+    //       },
+    //       { id: 8, name: "task1-3", tags: [], users: [], point: 10 },
+    //       { id: 9, name: "task1-2", tags: [], users: [], point: 100 }
+    //     ]
+    //   }
       /*         {
         name: "doing",
         id: 200,
@@ -64,8 +64,11 @@ export const mutations = {
         id: 300,
         items: [{ name: "task3-1" }, { name: "task3-3" }, { name: "task3-2" }]
       } */
-    ];
-    //state.columns = posts.message.columns;
+    // ];
+    console.log(posts)
+    state.columns = posts.message.columns;
+    state.tags = posts.message.tags
+    state.users = posts.message.users
   },
   [MUTATION_TYPES.API_FAILURE](state, error) {
     alert(error);
