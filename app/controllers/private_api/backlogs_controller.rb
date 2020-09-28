@@ -135,9 +135,11 @@ module PrivateApi
       def additional_obj(symbolize_key, obj)
         case symbolize_key
         when :tags  then
-          BacklogTag.where(backlog_id: @backlog.id).pluck(:id)
+          # obj -> backlog_item
+          obj.backlog_tags.pluck(:id)
         when :users then
-          Team.find_by_id(@backlog.team_id).users.pluck(:id)
+          # obj -> backlog_item
+          obj.users.pluck(:id)
         when :items then
           get_items_by_column(obj)
         else
