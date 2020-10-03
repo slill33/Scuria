@@ -47,12 +47,10 @@
 
     tags = BacklogTag.last(3)
     User.last(5).each_with_index do |user, index|
-      if (n%2==0 && index%2==0) || (n%2==1 && index%2==1)
-        UserToBacklog.create!(
-          user_id:user.id,
-          backlog_id:bl.id
-        )
-      end
+      UserToBacklog.create!(
+        user_id:user.id,
+        backlog_id:bl.id
+      )
     end
 
 

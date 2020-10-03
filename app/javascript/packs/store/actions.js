@@ -1,15 +1,19 @@
 import MutationTypes from "./mutation-types";
 import axios from "axios";
 export default {
-  getBacklog({ commit }, id) {
-    commit(MutationTypes.GET_BACKLOG_REQUEST);
+  setBacklogId({ commit }, id) {
+    commit(MutationTypes.SET_BACKLOG_ID, id);
+  },
+  getBacklog({ commit, state }) {
     axios
-      .get(`/api/v1/private/backlogs/${id}/columns_and_items_get.json`)
+      .get(
+        `/api/v1/private/backlogs/${state.backlogId}/columns_and_items_get.json`
+      )
       .then(response => {
         commit(MutationTypes.GET_BACKLOG_SUCCESS, response.data);
       })
       .catch(error => {
-        commit(MutationTypes.GET_BACKLOG_FAILURE, error);
+        commit(MutationTypes.API_FAILURE, error);
       });
   },
   moveItem({ commit }, event) {
@@ -20,10 +24,128 @@ export default {
     commit(MutationTypes.MOVE_ITEM, to);
   },
   moveColumn({ commit }, event) {
-    var toIndex = event.newIndex
+    var toIndex = event.newIndex;
     commit(MutationTypes.MOVE_COLUMN, toIndex);
   },
   setColumns({ commit }, val) {
     commit(MutationTypes.SET_COLUMNS, val);
+  },
+  editItem({ commit }, val) {
+    var itemModalInfo = {
+      new: false,
+      columnIndex: val.columnIndex,
+      itemIndex: val.itemIndex,
+      tagName: "",
+      tagField: false,
+      item: JSON.parse(JSON.stringify(val.item))
+    };
+    commit(MutationTypes.SET_ITEM_MODAL_INFO, itemModalInfo);
+  },
+  closeItemModal({ commit }) {
+    commit(MutationTypes.CLOSE_ITEM_MODAL);
+  },
+  addTag({ commit }, name) {
+    var newTag = {
+      id: 10,
+      name: name
+    };
+    commit(MutationTypes.ADD_TAG_SUCCESS, newTag);
+  },
+  toggleTag({ commit }, tagId) {
+    commit(MutationTypes.TOGGLE_TAG, tagId);
+  },
+  showTagField({ commit }) {
+    commit(MutationTypes.SHOW_TAG_FIELD);
+  },
+  setTagName({ commit }, name) {
+    commit(MutationTypes.SET_TAG_NAME, name);
+  },
+  editPoint({ commit }, point) {
+    console.log(point);
+    commit(MutationTypes.EDIT_POINT, point);
+  },
+  addUser({ commit }) {
+    console.log("addUser");
+    commit(MutationTypes.ADD_USER);
+  },
+  changeUser({ commit }, val) {
+    commit(MutationTypes.CHANGE_USER, val);
+  },
+  updateItem({ commit, state }) {
+    commit(MutationTypes.FORMAT_ITEM_MODAL_INFO);
+    console.log(state.itemModalInfo.item);
+    //api
+    commit(MutationTypes.ITEM_UPDATE_SUCCESS);
+  },
+  createItem({ commit, state }) {
+    //api
+    commit(MutationTypes.ITEM_CREATE_SUCCESS);
+  },
+  deleteItem({ commit, state }) {
+    //api
+    const ans = confirm("本当に削除しますか？");
+    if (ans) commit(MutationTypes.ITEM_DELETE_SUCCESS);
+  },
+  editItemName({ commit }, name) {
+    commit(MutationTypes.SET_ITEM_MODAL_INFO_NAME, name);
+  },
+  newItem({ commit }, index) {
+    var itemModalInfo = {
+      new: true,
+      columnIndex: index,
+      itemIndex: "",
+      tagName: "",
+      tagField: false,
+      item: {
+        id: "",
+        name: "",
+        tags: [],
+        users: [],
+        point: ""
+      }
+    };
+    commit(MutationTypes.SET_ITEM_MODAL_INFO, itemModalInfo);
+  },
+  setColumnColor({ commit }, val) {
+    commit(MutationTypes.SET_COLUMN_COLOR, val.hex);
+  },
+  closeColumnModal({ commit }) {
+    commit(MutationTypes.CLOSE_COLUMN_MODAL);
+  },
+  editColumn({ commit }, val) {
+    var columnModalInfo = {
+      new: false,
+      columnIndex: val.index,
+      column: JSON.parse(JSON.stringify(val.column))
+    };
+    commit(MutationTypes.EDIT_COLUMN_MODAL_INFO, columnModalInfo);
+  },
+  newColumn({ commit }) {
+    var columnModalInfo = {
+      new: true,
+      columnIndex: "",
+      column: {
+        name: "",
+        color: "#4D4D4D",
+        items: []
+      }
+    };
+    commit(MutationTypes.EDIT_COLUMN_MODAL_INFO, columnModalInfo);
+  },
+  editColumnName({ commit }, name) {
+    commit(MutationTypes.SET_COLUMN_MODAL_INFO_NAME, name);
+  },
+  updateColumn({ commit, state }) {
+    //api
+    commit(MutationTypes.COLUMN_UPDATE_SUCCESS);
+  },
+  createColumn({ commit, state }) {
+    //api
+    commit(MutationTypes.COLUMN_CREATE_SUCCESS);
+  },
+  deleteColumn({ commit, state }) {
+    //api
+    const ans = confirm("本当に削除しますか？");
+    if (ans) commit(MutationTypes.COLUMN_DELETE_SUCCESS);
   }
 };

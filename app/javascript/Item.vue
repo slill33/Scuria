@@ -1,12 +1,15 @@
 <template>
-  <div class="card text-dark item">
+  <div
+    class="card text-dark item"
+    @click="editItem({item: item,columnIndex: columnIndex,itemIndex:itemIndex})"
+  >
     <div class="card-header item-header">
-      <div v-if="item.tags.length!=0" class="item-tags">
-        <span v-for="tag in item.tags" :key="tag.name" class="tag">{{tag.name}}</span>
+      <div v-if="item.tags.length>0" class="item-tags">
+        <span v-for="tagId in item.tags" :key="tagId" class="tag">{{tags[tagId].name}}</span>
       </div>
       <div class="item-user">
-        <div v-if="item.users.length!=0" class="item-users">
-          <span v-for="user in item.users" :key="user.name">{{user.name}}</span>
+        <div v-if="item.users.length>0" class="item-users">
+          <span v-for="(userId, index) in item.users" :key="index+'_'+userId">{{users[userId].name}}</span>
         </div>
       </div>
     </div>
@@ -22,9 +25,15 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex";
 export default {
-  name: "Item",
-  props: ["item"]
+  props: ["item", "columnIndex", "itemIndex"],
+  methods: {
+    ...mapActions(["editItem"])
+  },
+  computed: {
+    ...mapState(["tags", "users"])
+  }
 };
 </script>
 

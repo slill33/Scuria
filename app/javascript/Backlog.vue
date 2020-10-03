@@ -1,15 +1,28 @@
 <template>
   <div class="app">
     <div id="backlog">
-      <draggable v-model="columns" class="columns" group="columns" @end="moveColumn">
+      <ItemModal v-if="itemModalFlag"></ItemModal>
+      <ColumnModal v-if="columnModalFlag"></ColumnModal>
+      <draggable
+        v-model="columns"
+        class="columns"
+        group="columns"
+        @end="moveColumn"
+        draggable=".column"
+      >
         <Column
           v-for="(column, index) in columns"
           :key="index"
           class="card text-white mb-3 column"
           v-bind:style="{ 'background-color': column.color}"
           :column="column"
-          :index="index"
+          :columnIndex="index"
         ></Column>
+        <button
+          type="button"
+          class="btn btn-dark rounded-circle p-0 column-add"
+          @click="newColumn()"
+        >＋</button>
       </draggable>
       <span>{{$store.state}}</span>
     </div>
@@ -20,20 +33,25 @@
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import Column from "./Column.vue";
+import ItemModal from "./ItemModal.vue";
+import ColumnModal from "./ColumnModal.vue";
 import axios from "axios";
 export default {
   components: {
     draggable,
-    Column
+    Column,
+    ItemModal,
+    ColumnModal
   },
   data() {
     return {};
   },
   mounted() {
-    this.getBacklog(this.$route.params["id"]);
+    this.setBacklogId(this.$route.params["id"]);
+    this.getBacklog();
   },
   computed: {
-    //...mapState(["columns"]),
+    ...mapState(["itemModalFlag", "columnModalFlag"]),
     columns: {
       get() {
         return this.$store.state.columns;
@@ -44,7 +62,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["moveColumn", "getBacklog", "setColumns"])
+    ...mapActions([
+      "moveColumn",
+      "getBacklog",
+      "setColumns",
+      "setBacklogId",
+      "newColumn"
+    ])
   }
 };
 </script>
@@ -58,5 +82,9 @@ export default {
 .columns {
   display: flex;
   align-items: flex-start;
+}
+.column-add {
+  width: 2rem;
+  height: 2rem;
 }
 </style>
