@@ -2,7 +2,10 @@
   <div>
     <div class="card-header column-header">
       <div class="column-name">{{column.name}}</div>
-      <i class="material-icons md-24 column-header-icon">settings</i>
+      <i
+        class="material-icons md-24 column-header-icon"
+        @click="editColumn({index:columnIndex,column:column})"
+      >settings</i>
     </div>
     <draggable
       v-model="column.items"
@@ -10,13 +13,19 @@
       class="card-body items"
       group="items"
       @end="moveItem"
-      :data-column-index="index"
+      :data-column-index="columnIndex"
     >
-      <Item v-for="item in column.items" :key="item.id" :item="item"></Item>
+      <Item
+        v-for="(item, index) in column.items"
+        :key="item.id"
+        :item="item"
+        :columnIndex="columnIndex"
+        :itemIndex="index"
+      ></Item>
     </draggable>
     <div class="card-footer">
       <div class="item-name" style="text-align:right">
-        <i class="material-icons md-24">add</i>
+        <i class="material-icons md-24" @click="newItem(columnIndex)">add</i>
       </div>
     </div>
   </div>
@@ -27,7 +36,7 @@ import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import Item from "./Item.vue";
 export default {
-  props: ["column", "index"],
+  props: ["column", "columnIndex"],
   components: {
     draggable,
     Item
@@ -38,7 +47,7 @@ export default {
   mounted() {},
   computed: {},
   methods: {
-    ...mapActions(["moveItem"])
+    ...mapActions(["moveItem", "newItem", "editColumn"])
   }
 };
 </script>
