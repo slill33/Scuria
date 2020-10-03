@@ -1,0 +1,53 @@
+.backlogs {
+    padding-top: 2rem;
+}
+
+.backlog-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.backlog {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+.header-icons {
+    margin-left: auto;
+}
+
+.header-icons>i {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.edit-backlog {
+    color: #212529;
+}
+
+.delete-backlog {
+    color: #F00;
+}
+
+.backlog-top {
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.backlog-add {
+    width: 2rem;
+    height: 2rem;
+}
+
+.backlog-top>.button_to {
+    margin-left: auto;
+}
+
+#all-backlogs {
+    display: none;
+}
