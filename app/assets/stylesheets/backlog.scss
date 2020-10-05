@@ -1,3 +1,11 @@
+.content-box {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+// index
 .backlogs {
     padding-top: 2rem;
 }
@@ -5,13 +13,6 @@
 .backlog-body {
     display: flex;
     flex-wrap: wrap;
-}
-
-.backlog {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
 }
 
 .header-icons {
@@ -51,3 +52,5 @@
 #all-backlogs {
     display: none;
 }
+
+// new + edit

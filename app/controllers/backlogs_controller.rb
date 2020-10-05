@@ -16,9 +16,20 @@ class BacklogsController < ApplicationController
   end
 
   def new
+    @backlog = Backlog.new
   end
 
   def create
+    backlog_info = backlog_params
+    if backlog_info[:parent_id] != nil
+      backlog = Backlog.new(name: backlog_info[:name], parent_id: backlog_info[:parent_id], team_id: current_user[:team_id], backlog_type_id: 1)
+    else
+      backlog = Backlog.new(name: backlog_info[:name], team_id: current_user[:team_id], backlog_type_id: 1)
+    end
+
+    backlog.save
+
+    redirect_to backlogs_path, turbolinks: false
   end
 
   def show
@@ -33,5 +44,9 @@ class BacklogsController < ApplicationController
   def destroy
     Backlog.find(params[:id]).destroy
     redirect_to action: :index
+  end
+
+  def backlog_params
+    params.require(:backlog).permit(:name, :backlog_type_id, :parent_id, :users)
   end
 end

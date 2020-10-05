@@ -1,0 +1,32 @@
+.content-box
+  h1 バックログ新規作成
+  = form_with(model: @backlog,data: { remote: false }) do |form|
+    .form-group
+      = form.label :name, "バックログ名"
+      = form.text_field :name ,class: 'form-control'
+    .radio-backlogtypes.form-group
+      = form.label :backlog_type_id, "バックログタイプ"
+      br/
+      - current_team.backlog_types.each do|type|
+        .form-check.form-check-inline
+          = form.radio_button :backlog_type_id, type.id, class:'form-check-label'
+          = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
+    .form-group
+      = form.label :parent_id, "親バックログ"
+      = form.select :parent_id, current_team.backlogs.pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
+
+    .form-row
+      .col
+        label for="user_ids"  User
+        = form.select :parent_id, current_team.users.pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
+      .col
+        label for="user_ids"  権限
+        input.form-control placeholder=("Last name") type="text" /
+    .form-group(style='display:block')
+      label for="user_ids"  Users:
+      input#user_ids.form-control name="user_ids" type="text" /
+    .text-right
+      = form.submit "作成", class: "btn btn-dark ml-auto"
+
+javascript:
+  backlogNewFunc();
