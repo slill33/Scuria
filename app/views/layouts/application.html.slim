@@ -28,6 +28,11 @@ html
                   = link_to("ユーザー一覧", root_path, class: "dropdown-item")
             li.nav-item.dropdown
               a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                |チームメニュー
+              .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
+                = link_to("バックログ一覧", backlogs_path, class: "dropdown-item")
+            li.nav-item.dropdown
+              a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 | バックログメニュー
               .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
                 = link_to("メンバー一覧", root_path, class: "dropdown-item")
