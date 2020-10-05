@@ -34,4 +34,10 @@ class BacklogsController < ApplicationController
     Backlog.find(params[:id]).destroy
     redirect_to action: :index
   end
+
+  private
+
+  def get_backlog_role(user, backlog_id)
+    TeamRole.find_by_id(user.user_to_backlogs.where(backlog_id: backlog_id)[0].team_role_id)
+  end
 end

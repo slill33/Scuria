@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_27_195325) do
+ActiveRecord::Schema.define(version: 2020_10_05_174725) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -74,6 +74,14 @@ ActiveRecord::Schema.define(version: 2020_09_27_195325) do
     t.integer "backlog_type_id", default: 0, null: false, unsigned: true
   end
 
+  create_table "team_roles", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "team_id", default: 0, null: false, unsigned: true
+    t.string "name", null: false
+    t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "teams", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 64, null: false
     t.datetime "created_at"
@@ -93,6 +101,7 @@ ActiveRecord::Schema.define(version: 2020_09_27_195325) do
     t.integer "backlog_id", default: 0, null: false, unsigned: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "team_role_id", default: 0, null: false, unsigned: true
   end
 
   create_table "users", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
