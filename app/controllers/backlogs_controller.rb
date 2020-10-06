@@ -46,6 +46,11 @@ class BacklogsController < ApplicationController
     redirect_to action: :index
   end
 
+  private
+
+  def get_backlog_role(user, backlog_id)
+    TeamRole.find_by_id(user.user_to_backlogs.where(backlog_id: backlog_id)[0].team_role_id)
+  end
   def backlog_params
     params.require(:backlog).permit(:name, :backlog_type_id, :parent_id, :users)
   end
