@@ -21,12 +21,12 @@
     #users-box
 
 
-    .form-group(style='display:block')
+    .form-group(style='display:none')
       label for="user_ids"  Users:
       input#user_ids.form-control name="user_ids" type="text" value="[]"
     .text-right
       = form.submit "作成", class: "btn btn-dark", id:"submit-btn"
-    .tmp(style='display:block')
+    .tmp(style='display:none')
       .user-setting
         .forms
           .form-row.user-setting-box
