@@ -22,12 +22,13 @@ class BacklogsController < ApplicationController
   def create
     backlog_info = backlog_params
     if backlog_info[:parent_id] != nil
-      backlog = Backlog.new(name: backlog_info[:name], parent_id: backlog_info[:parent_id], team_id: current_user[:team_id], backlog_type_id: 1)
+      backlog = Backlog.create(name: backlog_info[:name], parent_id: backlog_info[:parent_id], team_id: current_user[:team_id], backlog_type_id: 1)
     else
-      backlog = Backlog.new(name: backlog_info[:name], team_id: current_user[:team_id], backlog_type_id: 1)
+      backlog = Backlog.create(name: backlog_info[:name], team_id: current_user[:team_id], backlog_type_id: 1)
     end
-
-    backlog.save
+    JSON.parse(params[:user_ids], symbolize_names: true).each do |hash|
+      UserToBacklog.create(user_id: hash[:user_id], backlog_id: backlog.id, team_role_id: hash[:role_id])
+    end
 
     redirect_to backlogs_path, turbolinks: false
   end
@@ -51,6 +52,7 @@ class BacklogsController < ApplicationController
   def get_backlog_role(user, backlog_id)
     TeamRole.find_by_id(user.user_to_backlogs.where(backlog_id: backlog_id)[0].team_role_id)
   end
+
   def backlog_params
     params.require(:backlog).permit(:name, :backlog_type_id, :parent_id, :users)
   end
