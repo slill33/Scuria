@@ -1,12 +1,13 @@
 class Backlog < ApplicationRecord
-  has_many   :backlog_columns
-  has_many   :backlog_tags
-  has_many   :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
+  has_many :backlog_columns
+  has_many :backlog_tags
+  has_many :children, class_name: "Backlog", foreign_key: "parent_id", dependent: :destroy
   belongs_to :parent, class_name: "Backlog", foreign_key: "parent_id", optional: true
   belongs_to :backlog_type
-  has_many   :backlog_items
-  has_many   :user_to_backlogs
-  has_many   :users, through: :user_to_backlogs
+  has_many :backlog_items
+  has_many :user_to_backlogs
+  has_many :users, through: :user_to_backlogs
+  #has_many :team_roles, through: :user_to_backlogs
 
   #before_create :ensure_super_user
   #before_create :team_id_initialize
@@ -22,6 +23,7 @@ class Backlog < ApplicationRecord
   end
 
   private
+
   def team_id_initialize
     #self.team_id = self.user.team_id
   end

@@ -1,4 +1,4 @@
-.backlogs
+.content-box
   .form-group.backlog-top
     - if current_user.super
       .display_select_radio
@@ -10,7 +10,7 @@
           input#display-affiliate.form-check-input name="display" type="radio" checked="checked"/
           label.form-check-label for="display-affiliate"
             | 所属バックログのみ
-    = button_to '+'  ,{:action => "new"}, class:'btn btn-dark rounded-circle p-0 backlog-add'
+    = button_to '+'  ,{:action => "new"}, {method: :get ,class:'btn btn-dark rounded-circle p-0 backlog-add'}
 
   #affiliate-backlogs
     = render partial: "backlogs", locals: { backlogs:@affiliated_backlogs }

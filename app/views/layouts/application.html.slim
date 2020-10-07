@@ -14,9 +14,9 @@ html
         .dropdown
           button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             = current_backlog_name
-          - if current_backlogs.length > 0
+          - if current_team.backlogs.length > 0
             .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
-              - current_backlogs.each do |backlog|
+              - current_team.backlogs.each do |backlog|
                 = link_to(backlog.name, backlog_path(backlog.id), class: "dropdown-item", "data-turbolinks": false)
         #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
           ul.navbar-nav

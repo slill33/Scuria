@@ -1,3 +1,11 @@
+.content-box {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1rem;
+}
+
+// index
 .backlogs {
     padding-top: 2rem;
 }
@@ -5,13 +13,6 @@
 .backlog-body {
     display: flex;
     flex-wrap: wrap;
-}
-
-.backlog {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 1rem;
 }
 
 .header-icons {
@@ -34,9 +35,6 @@
 .backlog-top {
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .backlog-add {
@@ -50,4 +48,34 @@
 
 #all-backlogs {
     display: none;
+}
+
+// new + edit
+.icon_label {
+    position: relative;
+}
+
+#user-add {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+}
+
+.user-remove {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.user-setting {
+    display: flex;
+    margin-bottom: 0.3rem;
+}
+
+.user-setting>.forms {
+    width: 97.5%;
+}
+
+.user-setting>.icon {
+    position: relative;
 }
