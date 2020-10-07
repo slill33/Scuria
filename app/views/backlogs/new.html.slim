@@ -23,7 +23,7 @@
 
     .form-group(style='display:none')
       label for="user_ids"  Users:
-      input#user_ids.form-control name="user_ids" type="text" value="[]"
+      input#user_and_role_ids.form-control name="user_ids" type="text" value="[]"
     .text-right
       = form.submit "作成", class: "btn btn-dark", id:"submit-btn"
     .tmp(style='display:none')
@@ -31,13 +31,11 @@
         .forms
           .form-row.user-setting-box
             .col-md-4
-              -# label for="user_ids"  User
-              / = form.select :select_user, current_team.users.pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
+              //- label for="user_ids",class: 'small-label'  User
               select.form-control#select_user
                 = options_for_select(current_team.users.pluck(:name,:id).unshift(["未設定",0]))
             .col-md-8
-              / -# label for="user_ids"  権限
-              / = form.select :select_role, TeamRole.where(team_id:current_user.team_id).pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
+              //- label for="user_ids"  権限
               select.form-control#select_role
                 = options_for_select(TeamRole.where(team_id:current_user.team_id).pluck(:name,:id).unshift(["未設定",0]))
         .icon
