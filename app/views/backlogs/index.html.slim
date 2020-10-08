@@ -1,0 +1,23 @@
+.content-box
+  .form-group.backlog-top
+    - if current_user.super
+      .display_select_radio
+        .form-check.form-check-inline
+          input#display-all.form-check-input name="display" type="radio" /
+          label.form-check-label for="display-all"
+            | 全て
+        .form-check.form-check-inline
+          input#display-affiliate.form-check-input name="display" type="radio" checked="checked"/
+          label.form-check-label for="display-affiliate"
+            | 所属バックログのみ
+    = button_to '+'  ,{:action => "new"}, {method: :get ,class:'btn btn-dark rounded-circle p-0 backlog-add'}
+
+  #affiliate-backlogs
+    = render partial: "backlogs", locals: { backlogs:@affiliated_backlogs }
+
+  #all-backlogs
+    - if current_user.super
+      = render partial: "backlogs", locals: { backlogs:@backlogs }
+
+javascript:
+  backlogIndexFunc();

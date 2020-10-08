@@ -14,9 +14,9 @@ html
         .dropdown
           button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             = current_backlog_name
-          - if current_backlogs.length > 0
+          - if current_team.backlogs.length > 0
             .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
-              - current_backlogs.each do |backlog|
+              - current_team.backlogs.each do |backlog|
                 = link_to(backlog.name, backlog_path(backlog.id), class: "dropdown-item", "data-turbolinks": false)
         #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
           ul.navbar-nav
@@ -26,6 +26,11 @@ html
                   | 管理者メニュー
                 .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
                   = link_to("ユーザー一覧", root_path, class: "dropdown-item")
+            li.nav-item.dropdown
+              a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                |チームメニュー
+              .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
+                = link_to("バックログ一覧", backlogs_path, class: "dropdown-item")
             li.nav-item.dropdown
               a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 | バックログメニュー
