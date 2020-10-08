@@ -14,7 +14,11 @@ module PrivateApi
     def get_columns_and_items
       render json: {
         status:  200,
-        message: get_columns_and_association_items
+        message: {
+          columns: get_columns_and_association_items,
+          tags: get_normalize_backlog_tag_records,
+          users: get_normalize_user_records
+        },
       }.to_json
     rescue
       render json: "internal server error", status: :internal_server_error
@@ -68,42 +72,67 @@ module PrivateApi
     end
 
     concerning :GetMethod do
-      def get_columns_and_association_items
-        columns_info = @backlog.backlog_columns.map do |column|
-          column_info = COLUMN_KEYS.reduce({}) {|obj, key|
-            obj.tap {|me| me[key] = column[key] }
-          }
-          column_info[:items] = get_items_by_column(column)
 
-          column_info
-        end
-        return {columns: columns_info}
+      def get_columns_and_association_items
+        get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items))
       end
 
       def get_items_by_column(column)
-        items_info = column.backlog_items.map do |item|
-          item_info = ITEM_KEYS.reduce({}) {|obj, key|
-            obj.tap {|me| me[key] = item[key]}
-          }
-          item_info[:tags]  = get_tags(item)
-          item_info[:users] = get_users(item)
+        get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users))
+      end
 
-          item_info
+      def get_normalize_info(obj_arrays, keys, additional_obj_keys)
+        info = obj_arrays.map do |obj|
+          info = keys.reduce({}) {|memo, key|
+            memo.tap {|me| me[key] = obj[key] }
+          }
+
+          additional_obj_keys.each do |key|
+            info[key] = additional_obj(key, obj)
+          end
+
+          info
         end
 
-        return items_info
+        return info
       end
 
-      def get_tags(item)
-        # TODO: uncomment out 
-        #normalize_update_infos(item.backlog_tags, keys)
-        return []
+      def additional_obj(symbolize_key, obj)
+        case symbolize_key
+        when :tags  then
+          BacklogTag.where(backlog_id: @backlog.id).pluck(:id)
+        when :users then
+          Team.find_by_id(@backlog.team_id).users.pluck(:id)
+        when :items then
+          get_items_by_column(obj)
+        else
+          []
+        end
       end
 
-      def get_users(item)
-        # TODO: uncomment out 
-        #normalize_update_infos(item.users, keys)
-        return []
+
+      %w(backlog_tag user).each do |model_name|
+        define_method("get_normalize_#{model_name}_records") do |root_key: :id, attr_names: %i(name)|
+          objs = send("#{model_name}_objs")
+          normalize_obj_records(objs, root_key, attr_names)
+        end
+      end
+
+      def normalize_obj_records(objs, root_key, attr_names)
+        return objs.pluck(root_key, *attr_names).reduce({}) {|memo, obj|
+          h = {}
+          attr_names.each.with_index(1) {|attr_name, idx| h["#{attr_name}".intern] = obj[idx] }
+
+          memo.tap {|me| me["#{obj.first}".intern] = h }
+        }
+      end
+
+      def backlog_tag_objs
+        return BacklogTag.where(backlog_id: @backlog.id)
+      end
+
+      def user_objs
+        return @backlog.users
       end
     end
 

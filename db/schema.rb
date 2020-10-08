@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_30_193511) do
+ActiveRecord::Schema.define(version: 2020_10_05_174725) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -19,6 +19,20 @@ ActiveRecord::Schema.define(version: 2020_08_30_193511) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "color", limit: 8, default: "", null: false
+  end
+
+  create_table "backlog_item_comments", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.text "content", null: false
+    t.integer "backlog_item_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "backlog_item_to_backlog_tags", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "backlog_item_id", default: 0, null: false, unsigned: true
+    t.integer "backlog_tag_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "backlog_items", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -33,6 +47,14 @@ ActiveRecord::Schema.define(version: 2020_08_30_193511) do
     t.datetime "updated_at"
     t.integer "parent_id", default: 0, null: false, unsigned: true
     t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.text "description", null: false
+  end
+
+  create_table "backlog_tags", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "backlog_types", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -44,7 +66,6 @@ ActiveRecord::Schema.define(version: 2020_08_30_193511) do
 
   create_table "backlogs", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "user_id", default: 0, null: false, unsigned: true
     t.integer "team_id", default: 0, null: false, unsigned: true
     t.integer "parent_id", default: 0, null: false, unsigned: true
     t.datetime "created_at"
@@ -53,11 +74,34 @@ ActiveRecord::Schema.define(version: 2020_08_30_193511) do
     t.integer "backlog_type_id", default: 0, null: false, unsigned: true
   end
 
+  create_table "team_roles", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "team_id", default: 0, null: false, unsigned: true
+    t.string "name", null: false
+    t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "teams", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 64, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+  end
+
+  create_table "user_to_backlog_items", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", default: 0, null: false, unsigned: true
+    t.integer "backlog_item_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_to_backlogs", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.integer "user_id", default: 0, null: false, unsigned: true
+    t.integer "backlog_id", default: 0, null: false, unsigned: true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "team_role_id", default: 0, null: false, unsigned: true
   end
 
   create_table "users", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

@@ -1,0 +1,7 @@
+- backlogs.each do |backlog|
+  .card.backlog
+    .card-body.backlog-body
+      = link_to backlog.name, backlog_path(backlog) , "data-turbolinks": false
+      .header-icons
+        = link_to(content_tag(:i, 'edit', class: 'material-icons md-25 edit-backlog'), edit_backlog_path(backlog),class:'edit-backlog')
+        = link_to(content_tag(:i, 'close', class: 'material-icons md-25'), backlog_path(backlog), :method => :delete, class:'delete-backlog',method: :delete, data: { confirm: '本当に削除しますか?' })
