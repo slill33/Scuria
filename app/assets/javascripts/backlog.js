@@ -57,7 +57,6 @@
                 const userAndRoleIds = JSON.parse($('#user_and_role_ids').val());
                 for (let i = 0; i < userAndRoleIds.length; i++) {
                     thisBox = $('.tmp > .user-setting').clone(true).appendTo('#users-box')
-                    console.log(userAndRoleIds[i]['user_id'])
                     $(thisBox).find('#select_user').val(userAndRoleIds[i]['user_id'])
                     $(thisBox).find('#select_role').val(userAndRoleIds[i]['role_id'])
                 }

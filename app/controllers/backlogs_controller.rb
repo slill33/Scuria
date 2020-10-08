@@ -47,11 +47,13 @@ class BacklogsController < ApplicationController
   def update
     backlog_info = backlog_params
     backlog = Backlog.find_by_id(params[:id])
+
     if backlog_info[:parent_id] != nil
       backlog.update_attributes(name: backlog_info[:name], parent_id: backlog_info[:parent_id], team_id: current_user[:team_id], backlog_type_id: 1)
     else
       backlog.update_attributes(name: backlog_info[:name], team_id: current_user[:team_id], backlog_type_id: 1)
     end
+
     left_user = JSON.parse(params[:user_and_role_ids], symbolize_names: true).pluck(:user_id) & backlog.user_to_backlogs.pluck(:user_id)
     remove_user = backlog.user_to_backlogs.pluck(:user_id) - left_user
     UserToBacklogItem.where(user_id: backlog.user_to_backlogs.pluck(:user_id) - left_user).where(backlog_id: backlog.id).destroy_all
