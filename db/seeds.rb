@@ -41,7 +41,8 @@
 
     team_roles = TeamRole.last(3)
     tags = BacklogTag.last(3)
-    User.last(5).each_with_index do |user, index|
+    users = User.last(5)
+    users.each_with_index do |user, index|
       UserToBacklog.create!(
         user_id: user.id,
         backlog_id: bl.id,
@@ -72,6 +73,14 @@
           BacklogItemToBacklogTag.create!(
             backlog_item_id: item.id,
             backlog_tag_id: tags[tag_id].id,
+          )
+        end
+        user_ids_array = [[0], [0, 1], [0, 1, 2, 3]]
+        user_ids_array[index].each do |user_id|
+          UserToBacklogItem.create(
+            backlog_id: bl.id,
+            user_id: users[user_id].id,
+            backlog_item_id: item.id,
           )
         end
       end
