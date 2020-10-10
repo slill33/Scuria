@@ -99,9 +99,6 @@ module PrivateApi
 
     def find_backlog_item
       @bi = BacklogItem.find_by_id(@params[:id])
-      #@bi = BacklogItem.find_by(backlog_id:        @params[:backlog_id],
-      #                          backlog_column_id: @params[:backlog_column_id],
-      #                          priority:          @params[:priority])
     end
 
     #{

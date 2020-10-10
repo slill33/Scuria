@@ -62,7 +62,6 @@ module PrivateApi
 
     def find_backlog_column
       @bc = BacklogColumn.find_by_id(@params[:id])
-      #@bc = BacklogColumn.find_by(backlog_id: @params[:backlog_id], position: @params[:position])
     end
 
     #{
