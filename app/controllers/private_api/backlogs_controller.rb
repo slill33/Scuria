@@ -183,16 +183,16 @@ module PrivateApi
       def update_priority_across_columns(new_column_id)
         new_column_items = BacklogColumn.find_by_id(new_column_id).backlog_items
 
-        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority+1, @old_column_items.maximum(:priority)))
+        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority + 1, @old_column_items.maximum(:priority)))
         increment_backlog_items_priority(column_item_ids(new_column_items, @new_priority, new_column_items.maximum(:priority)))
       end
 
       def raise_priority
-        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority+1, @new_priority))
+        decrement_backlog_items_priority(column_item_ids(@old_column_items, @old_priority + 1, @new_priority))
       end
 
       def lower_priority
-        increment_backlog_items_priority(column_item_ids(@old_column_items, @new_priority, @old_priority-1))
+        increment_backlog_items_priority(column_item_ids(@old_column_items, @new_priority, @old_priority - 1))
       end
 
       def column_item_ids(column_items, beginning_of_range, end_of_range)
@@ -241,11 +241,11 @@ module PrivateApi
       end
 
       def raise_position
-        decrement_backlog_columns_position(column_ids(@old_columns, @old_position+1, @new_position))
+        decrement_backlog_columns_position(column_ids(@old_columns, @old_position + 1, @new_position))
       end
 
       def lower_position
-        increment_backlog_columns_position(column_ids(@old_columns, @new_position, @old_position-1))
+        increment_backlog_columns_position(column_ids(@old_columns, @new_position, @old_position - 1))
       end
 
       def column_ids(columns, beginning_of_range, end_of_range)
