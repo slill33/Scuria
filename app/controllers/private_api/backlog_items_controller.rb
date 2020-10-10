@@ -10,7 +10,7 @@ module PrivateApi
     #  point: 33,
     #  description: 'sample description',
     #  user_ids: [1, 2, 3],
-    #  tags_ids: [3, 4, 8]
+    #  tag_ids: [3, 4, 8]
     #}
     def create
       @backlog_column_id = @params[:backlog_column_id]
@@ -18,7 +18,7 @@ module PrivateApi
       @point             = @params[:point],
       @description       = @params[:description]
       @user_ids          = @params[:user_ids]
-      @tag_ids           = @params[:tags_ids]
+      @tag_ids           = @params[:tag_ids]
 
       @bc = BacklogColumn.find_by_id(@backlog_column_id)
 
@@ -29,7 +29,7 @@ module PrivateApi
         priority:    new_priority
       )
 
-      if @bi.valid? 
+      if @bi.valid?
         @bi.save!
         set_users_to_backlog_item
         set_tags_to_backlog_item
@@ -45,7 +45,7 @@ module PrivateApi
       @bi.point       = @params[:point],
       @bi.description = @params[:description],
       @user_ids       = @params[:user_ids]
-      @tag_ids        = @params[:tags_ids]
+      @tag_ids        = @params[:tag_ids]
 
       if @bi.valid?
         @bi.save!
@@ -98,7 +98,7 @@ module PrivateApi
     #  point: 33,
     #  description: 'sample description',
     #  user_ids: [1, 2, 3],
-    #  tags_ids: [3, 4, 8]
+    #  tag_ids: [3, 4, 8]
     #}
     def parse_request_body
       @params ||= JSON.parse(request.body.read, { symbolize_names: true })
