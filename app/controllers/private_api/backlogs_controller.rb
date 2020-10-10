@@ -47,25 +47,6 @@ module PrivateApi
       end
     end
 
-    def update_item_info
-      # update_target_attributes: {
-      #   backlog_item_id: 1
-      #   name:            test
-      #   point:           3
-      #   priority:        1
-      # }
-      update_target_attributes = @params[:update_target_attributes]
-      update_target_item       = BacklogItem.find_by_id(@params[:backlog_item_id])
-      update_target_item.update(update_target_attributes)
-
-      render json: {
-        status: 200,
-        message: "ok"
-      }.to_json
-    rescue
-      render json: "internal server error", status: :internal_server_error
-    end
-
     private
 
     def parse_request_body
@@ -80,11 +61,11 @@ module PrivateApi
     concerning :GetMethod do
 
       def get_columns_and_association_items
-        get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items)).sort_by{|column| column[:position]}
+        return get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items)).sort_by {|column| column[:position]}
       end
 
       def get_items_by_column(column)
-        get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by{|item| item[:priority]}
+        return get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by{|item| item[:priority]}
       end
 
       def get_normalize_info(obj_arrays, keys, additional_obj_keys)
