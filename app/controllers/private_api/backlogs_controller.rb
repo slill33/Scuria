@@ -7,7 +7,7 @@ module PrivateApi
 
     skip_before_action :verify_authenticity_token
 
-    before_action :parse_request_body, only: [:update_item_location]
+    before_action :parse_request_body, only: [:update_column_location, :update_item_location]
     before_action :find_backlog
 
 
@@ -27,6 +27,17 @@ module PrivateApi
 
     def update_item_location
       status = _update_item_location
+
+      case status
+      when 200 then
+        render json: { status: 200, message: "ok" }.to_json
+      else
+        render status: :internal_server_error, json: {status: 500, message: 'Internal Server Error'}.to_json
+      end
+    end
+
+    def update_column_location
+      status = _update_column_location
 
       case status
       when 200 then
@@ -136,6 +147,10 @@ module PrivateApi
     concerning :UpdateMethod do
       #def update_backlog_items_priority(old_column_id, new_column_id, priority)
       #end
+
+      ####################
+      # for backlog_item #
+      ####################
       def _update_item_location
         update_target_item = BacklogItem.find_by_id(@params[:backlog_item_id])
         new_column_id      = @params[:new_column_id]
@@ -156,7 +171,6 @@ module PrivateApi
               lower_priority
             end
 
-            # TODO: after_update other backlog_item
             update_target_item.update!(backlog_column_id: new_column_id, priority: @new_priority)
           end
 
@@ -192,7 +206,62 @@ module PrivateApi
       def decrement_backlog_items_priority(target_ids)
         BacklogItem.decrement_counter(:priority, target_ids)
       end
+
+
+      ######################
+      # for backlog_column #
+      ######################
+      def _update_column_location
+        #{
+        #  backlog_id: 3,
+        #  backlog_column_id: 33,
+        #  new_position: 3
+        #}
+        update_target_column = BacklogColumn.find_by_id(@params[:backlog_column_id])
+        @new_position        = @params[:new_position]
+        @old_position        = update_target_column.position
+
+        @old_columns = BacklogColumn.where(backlog_id: @params[:backlog_id])
+
+        begin
+          ActiveRecord::Base.transaction do
+            if @old_position < @new_position then
+              raise_position
+            elsif @new_position < @old_position then
+              lower_position
+            end
+
+            update_target_column.update!(position: @new_position)
+          end
+
+          return 200
+        rescue
+          return 500
+        end
+      end
+
+      def raise_position
+        decrement_backlog_columns_position(column_ids(@old_columns, @old_position+1, @new_position))
+      end
+
+      def lower_position
+        increment_backlog_columns_position(column_ids(@old_columns, @new_position, @old_position-1))
+      end
+
+      def column_ids(columns, beginning_of_range, end_of_range)
+        return columns.where(position: beginning_of_range..end_of_range).pluck(:id)
+      end
+
+      def increment_backlog_columns_position(target_ids)
+        BacklogColumn.increment_counter(:position, target_ids)
+      end
+
+      def decrement_backlog_columns_position(target_ids)
+        BacklogColumn.decrement_counter(:position, target_ids)
+      end
+
     end
+
 
     def backlog_item_params
       @paramas.require(:backlog_item).permit(:priority, :backlog_column_id)
