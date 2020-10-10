@@ -138,7 +138,6 @@ module PrivateApi
 
         begin
           @shift_target_items = BacklogColumn.find_by_id(old_column_id).backlog_items
-          priority_max = @shift_target_items.maximum(:priority)
 
           ActiveRecord::Base.transaction do
             if old_column_id != new_column_id then
