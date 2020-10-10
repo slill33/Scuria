@@ -67,6 +67,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'devise'
 gem 'devise_invitable'
+gem 'devise-i18n'
+gem 'devise-i18n-views'
 gem "paranoia", "~> 2.2"
 
 gem 'bootstrap', '~> 4.1.1'
