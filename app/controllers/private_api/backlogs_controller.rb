@@ -1,13 +1,13 @@
 module PrivateApi
   class BacklogsController < ApplicationController
-    COLUMN_KEYS = %i(id name color)
-    ITEM_KEYS   = %i(id name point)
+    COLUMN_KEYS = %i(id name color position)
+    ITEM_KEYS   = %i(id name point priority)
     TAG_KEYS    = %i(id name)
     USER_KEYS   = %i(id name)
 
     skip_before_action :verify_authenticity_token
 
-    before_action :parse_request_body, only: [:upsert]
+    before_action :parse_request_body, only: [:update_item_location]
     before_action :find_backlog
 
 
@@ -58,27 +58,22 @@ module PrivateApi
     private
 
     def parse_request_body
-      @params ||= JSON.parse(request.body.read, { symbolize_names: true })
+      body = request.body.read
+      @params ||= JSON.parse(body, symbolize_names: true)
     end
 
     def find_backlog
-      # 暫定でhashcodeにしました。
-      # 適当にいじってくれれば
-      @backlog = Backlog.find_by(id: params[:id].to_i)
-    end
-
-    def backlog_contents(id, hashcode)
-      Backlog.find_by(hashcode: params[:hashcode])
+      @backlog = Backlog.find_by(id: params[:id])
     end
 
     concerning :GetMethod do
 
       def get_columns_and_association_items
-        get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items))
+        get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items)).sort_by{|column| column[:position]}
       end
 
       def get_items_by_column(column)
-        get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users))
+        get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by{|item| item[:priority]}
       end
 
       def get_normalize_info(obj_arrays, keys, additional_obj_keys)
@@ -144,13 +139,13 @@ module PrivateApi
       def _update_item_location
         update_target_item = BacklogItem.find_by_id(@params[:backlog_item_id])
         new_column_id      = @params[:new_column_id]
-        old_column_id      = update_target_item.column_id
+        old_column_id      = update_target_item.backlog_column_id
         @new_priority      = @params[:new_priority]
         @old_priority      = update_target_item.priority
 
         begin
           @old_column_items = BacklogColumn.find_by_id(old_column_id).backlog_items
-          priority_max = old_column_items.maximum(:priority)
+          priority_max = @old_column_items.maximum(:priority)
 
           ActiveRecord::Base.transaction do
             if old_column_id != new_column_id then
@@ -162,7 +157,7 @@ module PrivateApi
             end
 
             # TODO: after_update other backlog_item
-            update_target_item.update(backlog_column_id: new_column_id, priority: @new_priority)
+            update_target_item.update!(backlog_column_id: new_column_id, priority: @new_priority)
           end
 
           return 200
