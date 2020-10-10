@@ -65,7 +65,7 @@ module PrivateApi
       end
 
       def get_items_by_column(column)
-        return get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by{|item| item[:priority]}
+        return get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by {|item| item[:priority]}
       end
 
       def get_normalize_info(obj_arrays, keys, additional_obj_keys)
@@ -126,9 +126,6 @@ module PrivateApi
     end
 
     concerning :UpdateMethod do
-      #def update_backlog_items_priority(old_column_id, new_column_id, priority)
-      #end
-
       ####################
       # for backlog_item #
       ####################
