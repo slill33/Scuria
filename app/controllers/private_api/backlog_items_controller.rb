@@ -77,12 +77,14 @@ module PrivateApi
     end
 
     def set_users_to_backlog_item
+      UserToBacklogItem.where(backlog_item_id: @bi.id).destroy_all
       @user_ids.each {|user_id|
         UserToBacklogItem.create!(user_id: user_id, backlog_item_id: @bi.id)
       }
     end
 
     def set_tags_to_backlog_item
+      BacklogItemToBacklogTag.where(backlog_item_id: @bi.id).destroy_all
       @tag_ids.each {|tag_id|
         BacklogItemToBacklogTag.create!(backlog_tag_id: tag_id, backlog_item_id: @bi.id)
       }
