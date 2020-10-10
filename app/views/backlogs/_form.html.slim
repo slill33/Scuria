@@ -1,0 +1,41 @@
+= form_with(model: backlog,data: { remote: false }) do |form|
+  .form-group
+    = form.label :name, "バックログ名"
+    = form.text_field :name ,class: 'form-control'
+  .radio-backlogtypes.form-group
+    = form.label :backlog_type_id, "バックログタイプ"
+    br/
+    - current_team.backlog_types.each do|type|
+      .form-check.form-check-inline
+        = form.radio_button :backlog_type_id, type.id, class:'form-check-label'
+        = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
+  .form-group
+    = form.label :parent_id, "親バックログ"
+    = form.select :parent_id, current_team.backlogs.pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
+
+  .icon_label
+    label 参加ユーザー
+    i.material-icons.md-24#user-add   add
+  #users-box
+
+  .form-group(style='display:none')
+    label for="user_and_role_ids"  Users:
+    / input#user_and_role_ids.form-control name="user_ids" type="text" value="[]"
+    = text_field_tag "user_and_role_ids",@user_and_role_ids,{class:"form-control",id:"user_and_role_ids"}
+  .text-right
+    - action_str = action=="new"? "作成" : "変更"
+    = form.submit action_str, class: "btn btn-dark", id:"submit-btn"
+  .tmp(style='display:none')
+    .user-setting
+      .forms
+        .form-row.user-setting-box
+          .col-md-4
+            //- label for="user_ids",class: 'small-label'  User
+            select.form-control#select_user
+              = options_for_select(current_team.users.pluck(:name,:id).unshift(["未設定",0]))
+          .col-md-8
+            //- label for="user_ids"  権限
+            select.form-control#select_role
+              = options_for_select(TeamRole.where(team_id:current_user.team_id).pluck(:name,:id).unshift(["未設定",0]))
+      .icon
+        i.material-icons.md-24.user-remove   close

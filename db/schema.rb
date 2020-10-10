@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_05_174725) do
+ActiveRecord::Schema.define(version: 2020_10_05_174726) do
 
   create_table "backlog_columns", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2020_10_05_174725) do
     t.integer "backlog_item_id", default: 0, null: false, unsigned: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "backlog_id", default: 0, null: false, unsigned: true
   end
 
   create_table "user_to_backlogs", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|

@@ -7,6 +7,7 @@ class Backlog < ApplicationRecord
   has_many :backlog_items
   has_many :user_to_backlogs
   has_many :users, through: :user_to_backlogs
+  has_many :user_to_backlog_items
   #has_many :team_roles, through: :user_to_backlogs
 
   #before_create :ensure_super_user
