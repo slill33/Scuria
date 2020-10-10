@@ -11,4 +11,8 @@ class BacklogItem < ApplicationRecord
 
   validates :priority, uniqueness: { scope: [:backlog_id, :backlog_column_id] }, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
+  scope :belonging_to_backlog_column, -> (bc_id)           { where(backlog_column_id: bc_id) }
+  scope :greater_than_priority,       -> (priority)        { where('priority > ?', priority) }
+  scope :shift_targets_when_destroy,  -> (bc_id, priority) { belonging_to_backlog_column(bc_id).greater_than_priority(priority) }
+
 end
