@@ -38,7 +38,7 @@ module PrivateApi
         set_users_to_backlog_item
         set_tags_to_backlog_item
 
-        render json: {}, status: 200
+        render json: { created_item_id:  @bi.id }.to_json, status: 200
       else
         render json: "internal server error", status: :internal_server_error
       end

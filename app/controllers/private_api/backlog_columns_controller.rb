@@ -21,7 +21,7 @@ module PrivateApi
 
       if @bc.valid?
         @bc.save!
-        render json: {}, status: 200
+        render json: { created_column_id: @bc.id }.to_json, status: 200
       else
         render json: "internal server error", status: :internal_server_error
       end
