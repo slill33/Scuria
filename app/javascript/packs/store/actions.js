@@ -16,16 +16,37 @@ export default {
         commit(MutationTypes.API_FAILURE, error);
       });
   },
-  moveItem({ commit }, event) {
-    var to = {
-      columnIndex: Number(event.to.dataset.columnIndex),
-      itemIndex: event.newIndex
-    };
-    commit(MutationTypes.MOVE_ITEM, to);
+  moveItem({ commit, state }, event) {
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/item_location_update.json`,
+        {
+          backlog_item_id: state.columns[Number(event.to.dataset.columnIndex)].items[event.newIndex].id,
+          new_column_id: state.columns[Number(event.to.dataset.columnIndex)].id,
+          new_priority: event.newIndex,
+        }
+      )
+      .then(response => {
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
-  moveColumn({ commit }, event) {
-    var toIndex = event.newIndex;
-    commit(MutationTypes.MOVE_COLUMN, toIndex);
+  moveColumn({ commit, state }, event) {
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/column_location_update.json`,
+        {
+          backlog_column_id: state.columns[event.newIndex].id,
+          new_position: event.newIndex,
+        }
+      )
+      .then(response => {
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
+
   },
   setColumns({ commit }, val) {
     commit(MutationTypes.SET_COLUMNS, val);
@@ -61,11 +82,9 @@ export default {
     commit(MutationTypes.SET_TAG_NAME, name);
   },
   editPoint({ commit }, point) {
-    console.log(point);
     commit(MutationTypes.EDIT_POINT, point);
   },
   addUser({ commit }) {
-    console.log("addUser");
     commit(MutationTypes.ADD_USER);
   },
   changeUser({ commit }, val) {
@@ -79,7 +98,28 @@ export default {
   },
   createItem({ commit, state }) {
     //api
-    commit(MutationTypes.ITEM_CREATE_SUCCESS);
+    const item = state.itemModalInfo.item
+    console.log(item)
+    axios
+      .post(
+        '/api/v1/private/backlog_items/create.json',
+        {
+          backlog_column_id: state.columns[state.itemModalInfo.columnIndex].id,
+          name: item.name,
+          point: item.point,
+          description: item.description,
+          user_ids: item.users,
+          tag_ids: item.tags,
+          parent_id: 0,//要修正
+
+        }
+      )
+      .then(response => {
+        commit(MutationTypes.ITEM_CREATE_SUCCESS, response);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
   deleteItem({ commit, state }) {
     //api
@@ -88,6 +128,9 @@ export default {
   },
   editItemName({ commit }, name) {
     commit(MutationTypes.SET_ITEM_MODAL_INFO_NAME, name);
+  },
+  editItemDescription({ commit }, description) {
+    commit(MutationTypes.SET_ITEM_MODAL_INFO_DESCRIPTION, description);
   },
   newItem({ commit }, index) {
     var itemModalInfo = {
