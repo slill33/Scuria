@@ -109,7 +109,6 @@ export default {
         }
       )
       .then(response => {
-        //api
         commit(MutationTypes.ITEM_UPDATE_SUCCESS);
       })
       .catch(error => {
@@ -256,7 +255,6 @@ export default {
       });
   },
   deleteColumn({ commit, state }) {
-    //api
     const ans = confirm("本当に削除しますか?");
     if (ans) {
       axios
