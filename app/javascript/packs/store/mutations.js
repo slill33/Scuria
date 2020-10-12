@@ -18,7 +18,6 @@ export const mutations = {
   [MUTATION_TYPES.SET_ITEM_MODAL_INFO](state, itemModalInfo) {
     state.itemModalInfo = itemModalInfo;
     state.itemModalFlag = true;
-    console.log(state.itemModalFlag);
   },
   [MUTATION_TYPES.CLOSE_ITEM_MODAL](state) {
     state.itemModalFlag = false;
@@ -52,7 +51,6 @@ export const mutations = {
     state.itemModalInfo.item.users.push("");
   },
   [MUTATION_TYPES.CHANGE_USER](state, val) {
-    console.log(val);
     state.itemModalInfo.item.users.splice(val.index, 1, Number(val.userId));
   },
   [MUTATION_TYPES.ITEM_DELETE_SUCCESS](state) {
@@ -80,7 +78,7 @@ export const mutations = {
     state.itemModalInfo.item.tags.sort();
   },
   [MUTATION_TYPES.ITEM_CREATE_SUCCESS](state, response) {
-    console.log(response)
+    state.itemModalInfo.item.id = response.data.created_item_id
     state.columns[state.itemModalInfo.columnIndex].items.push(
       state.itemModalInfo.item
     );
@@ -111,7 +109,9 @@ export const mutations = {
     );
     state.columnModalFlag = false;
   },
-  [MUTATION_TYPES.COLUMN_CREATE_SUCCESS](state) {
+  [MUTATION_TYPES.COLUMN_CREATE_SUCCESS](state, response) {
+    state.columnModalInfo.column.id = response.data.created_column_id
     state.columns.push(state.columnModalInfo.column);
+    state.columnModalFlag = false;
   }
 }
