@@ -22,7 +22,6 @@ module PrivateApi
       @tag_ids = @params[:tag_ids]
 
       @bc = BacklogColumn.find_by_id(@backlog_column_id)
-      @b = Backlog.find_by_id(params[:id])
 
       @bi = @bc.backlog_items.build(
         name: @params[:name],
@@ -50,7 +49,6 @@ module PrivateApi
       @bi.description = @params[:description]
       @user_ids = @params[:user_ids]
       @tag_ids = @params[:tag_ids]
-      @b = Backlog.find_by_id(params[:id])
 
       if @bi.valid?
         @bi.save!
@@ -87,7 +85,7 @@ module PrivateApi
     def set_users_to_backlog_item
       UserToBacklogItem.where(backlog_item_id: @bi.id).destroy_all
       @user_ids.each { |user_id|
-        UserToBacklogItem.create!(user_id: user_id, backlog_item_id: @bi.id, backlog_id: @b.id)
+        UserToBacklogItem.create!(user_id: user_id, backlog_item_id: @bi.id, backlog_id: params[:id])
       }
     end
 
