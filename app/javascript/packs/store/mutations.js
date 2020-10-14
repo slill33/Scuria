@@ -5,67 +5,6 @@ export const mutations = {
     state.backlogId = id;
   },
   [MUTATION_TYPES.GET_BACKLOG_SUCCESS](state, posts) {
-    // state.columns = [
-    //   {
-    //     name: "Todo",
-    //     id: 1,
-    //     color: "#194d33",
-    //     items: [
-    //       {
-    //         id: 1,
-    //         name: "task1-1",
-    //         tags: [1, 2],
-    //         users: [1, 2],
-    //         point: 1
-    //       },
-    //       { id: 2, name: "task1-3", tags: [], users: [], point: 1 },
-    //       { id: 3, name: "task1-2", tags: [], users: [], point: 100 }
-    //     ]
-    //   },
-    //   {
-    //     name: "Doing",
-    //     id: 2,
-    //     color: "#653294",
-    //     items: [
-    //       {
-    //         id: 4,
-    //         name: "task1-1",
-    //         tags: [3, 4],
-    //         users: [3, 4],
-    //         point: 0
-    //       },
-    //       { id: 5, name: "task1-3", tags: [], users: [], point: 10 },
-    //       { id: 6, name: "task1-2", tags: [], users: [], point: 100 }
-    //     ]
-    //   },
-    //   {
-    //     name: "Done",
-    //     id: 3,
-    //     color: "#FCC400",
-    //     items: [
-    //       {
-    //         id: 7,
-    //         name: "task1-1",
-    //         tags: [3, 4],
-    //         users: [3, 4],
-    //         point: 0
-    //       },
-    //       { id: 8, name: "task1-3", tags: [], users: [], point: 10 },
-    //       { id: 9, name: "task1-2", tags: [], users: [], point: 100 }
-    //     ]
-    //   }
-      /*         {
-        name: "doing",
-        id: 200,
-        items: [{ name: "task2-1" }, { name: "task2-3" }, { name: "task2-2" }]
-      },
-      {
-        name: "done",
-        id: 300,
-        items: [{ name: "task3-1" }, { name: "task3-3" }, { name: "task3-2" }]
-      } */
-    // ];
-    console.log(posts)
     state.columns = posts.message.columns;
     state.tags = posts.message.tags
     state.users = posts.message.users
@@ -73,28 +12,12 @@ export const mutations = {
   [MUTATION_TYPES.API_FAILURE](state, error) {
     alert(error);
   },
-
-  [MUTATION_TYPES.MOVE_ITEM](state, to) {
-    //apiに変更
-    console.log(
-      "移動したアイテムのID = " +
-        state.columns[to.columnIndex].items[to.itemIndex].id
-    );
-    console.log("移動先のcolumnId = " + state.columns[to.columnIndex].id);
-    console.log("移動先のindex = " + to.itemIndex);
-  },
   [MUTATION_TYPES.SET_COLUMNS](state, val) {
     state.columns = val;
-  },
-  [MUTATION_TYPES.MOVE_COLUMN](state, toIndex) {
-    //apiに変更
-    console.log("移動したカラムのID = " + state.columns[toIndex].id);
-    console.log("移動先のindex = " + toIndex);
   },
   [MUTATION_TYPES.SET_ITEM_MODAL_INFO](state, itemModalInfo) {
     state.itemModalInfo = itemModalInfo;
     state.itemModalFlag = true;
-    console.log(state.itemModalFlag);
   },
   [MUTATION_TYPES.CLOSE_ITEM_MODAL](state) {
     state.itemModalFlag = false;
@@ -103,6 +26,9 @@ export const mutations = {
     state.tags[newTag.id] = { name: newTag.name };
     state.itemModalInfo.tagName = "";
     state.itemModalInfo.tagField = false;
+  },
+  [MUTATION_TYPES.SET_ITEM_MODAL_INFO_DESCRIPTION](state, description) {
+    state.itemModalInfo.item.description = description;
   },
   [MUTATION_TYPES.TOGGLE_TAG](state, tagId) {
     var index = state.itemModalInfo.item.tags.indexOf(Number(tagId));
@@ -125,7 +51,6 @@ export const mutations = {
     state.itemModalInfo.item.users.push("");
   },
   [MUTATION_TYPES.CHANGE_USER](state, val) {
-    console.log(val);
     state.itemModalInfo.item.users.splice(val.index, 1, Number(val.userId));
   },
   [MUTATION_TYPES.ITEM_DELETE_SUCCESS](state) {
@@ -152,7 +77,8 @@ export const mutations = {
     );
     state.itemModalInfo.item.tags.sort();
   },
-  [MUTATION_TYPES.ITEM_CREATE_SUCCESS](state) {
+  [MUTATION_TYPES.ITEM_CREATE_SUCCESS](state, response) {
+    state.itemModalInfo.item.id = response.data.created_item_id
     state.columns[state.itemModalInfo.columnIndex].items.push(
       state.itemModalInfo.item
     );
@@ -183,7 +109,9 @@ export const mutations = {
     );
     state.columnModalFlag = false;
   },
-  [MUTATION_TYPES.COLUMN_CREATE_SUCCESS](state) {
+  [MUTATION_TYPES.COLUMN_CREATE_SUCCESS](state, response) {
+    state.columnModalInfo.column.id = response.data.created_column_id
     state.columns.push(state.columnModalInfo.column);
+    state.columnModalFlag = false;
   }
-};
+}
