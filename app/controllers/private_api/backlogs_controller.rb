@@ -17,6 +17,9 @@ module PrivateApi
           columns: get_columns_and_association_items,
           tags: get_normalize_backlog_tag_records,
           users: get_normalize_user_records,
+          child_backlogs: get_normalize_child_backlogs,
+          parent_backlog_columns: get_normalize_parent_backlog_columns,
+          allocated_items_from_parent_backlog: get_normalize_allocated_items_from_parent_backlog
         },
       }.to_json
     rescue
@@ -119,6 +122,23 @@ module PrivateApi
       def user_objs
         return @backlog.users
       end
+
+      def get_normalize_child_backlogs
+        children = @backlog.children
+        return {} if children.nil?
+        return normalize_obj_records(children, :id, %i(name))
+      end
+
+      def get_normalize_parent_backlog_columns
+        parent = @backlog.parent
+        return {} if parent.nil?
+        return normalize_obj_records(parent.backlog_columns, :id, %i(name))
+      end
+
+      def get_normalize_allocated_items_from_parent_backlog
+        return normalize_obj_records(@backlog.child_backlog_items, :id, %i(name))
+      end
+
     end
 
     concerning :UpdateMethod do
