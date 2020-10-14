@@ -9,6 +9,7 @@ class Backlog < ApplicationRecord
   has_many :users, through: :user_to_backlogs
   has_many :user_to_backlog_items
   #has_many :team_roles, through: :user_to_backlogs
+  has_many :child_backlog_items, class_name: "BacklogItem", foreign_key: "child_backlog_id"
 
   #before_create :ensure_super_user
   #before_create :team_id_initialize
