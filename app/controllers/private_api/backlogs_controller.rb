@@ -253,21 +253,6 @@ module PrivateApi
         end
       end
 
-      #def move_parent_item(item)
-      #  item_parent = item.parent
-      #  item_parent.backlog_column_id = item.backlog_column.parent.id if item_parent.children.all? {|_item_parent_child|
-      #    _item_parent_child.backlog_column.id == item.backlog_column.id
-      #  }
-      #  item_parent.save!
-
-      #  item = item_parent
-      #  item_parent = item.parent
-
-      #  return if item_parent.nil? || item_parent.backlog_column.parent.nil?
-
-      #  return move_parent_item(item)
-      #end
-
     end
 
     def backlog_item_params
