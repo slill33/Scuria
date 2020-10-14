@@ -16,16 +16,37 @@ export default {
         commit(MutationTypes.API_FAILURE, error);
       });
   },
-  moveItem({ commit }, event) {
-    var to = {
-      columnIndex: Number(event.to.dataset.columnIndex),
-      itemIndex: event.newIndex
-    };
-    commit(MutationTypes.MOVE_ITEM, to);
+  moveItem({ commit, state }, event) {
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/item_location_update.json`,
+        {
+          backlog_item_id: state.columns[Number(event.to.dataset.columnIndex)].items[event.newIndex].id,
+          new_column_id: state.columns[Number(event.to.dataset.columnIndex)].id,
+          new_priority: event.newIndex,
+        }
+      )
+      .then(response => {
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
-  moveColumn({ commit }, event) {
-    var toIndex = event.newIndex;
-    commit(MutationTypes.MOVE_COLUMN, toIndex);
+  moveColumn({ commit, state }, event) {
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/column_location_update.json`,
+        {
+          backlog_column_id: state.columns[event.newIndex].id,
+          new_position: event.newIndex,
+        }
+      )
+      .then(response => {
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
+
   },
   setColumns({ commit }, val) {
     commit(MutationTypes.SET_COLUMNS, val);
@@ -61,11 +82,9 @@ export default {
     commit(MutationTypes.SET_TAG_NAME, name);
   },
   editPoint({ commit }, point) {
-    console.log(point);
     commit(MutationTypes.EDIT_POINT, point);
   },
   addUser({ commit }) {
-    console.log("addUser");
     commit(MutationTypes.ADD_USER);
   },
   changeUser({ commit }, val) {
@@ -73,21 +92,81 @@ export default {
   },
   updateItem({ commit, state }) {
     commit(MutationTypes.FORMAT_ITEM_MODAL_INFO);
-    console.log(state.itemModalInfo.item);
-    //api
-    commit(MutationTypes.ITEM_UPDATE_SUCCESS);
+    const item = state.itemModalInfo.item
+
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/backlog_items/update.json`,
+        {
+          id: state.columns[state.itemModalInfo.columnIndex].items[state.itemModalInfo.itemIndex].id,
+          name: item.name,
+          point: item.point,
+          description: item.description,
+          user_ids: item.users,
+          tag_ids: item.tags,
+          parent_id: 0,//要修正
+
+        }
+      )
+      .then(response => {
+        commit(MutationTypes.ITEM_UPDATE_SUCCESS);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
+
   },
   createItem({ commit, state }) {
     //api
-    commit(MutationTypes.ITEM_CREATE_SUCCESS);
+    const item = state.itemModalInfo.item
+    axios
+      .post(
+        `/api/v1/private/backlogs/${state.backlogId}/backlog_items/create.json`,
+        {
+          backlog_column_id: state.columns[state.itemModalInfo.columnIndex].id,
+          name: item.name,
+          point: item.point,
+          description: item.description,
+          user_ids: item.users,
+          tag_ids: item.tags,
+          parent_id: 0,//要修正
+
+        }
+      )
+      .then(response => {
+        commit(MutationTypes.ITEM_CREATE_SUCCESS, response);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
   deleteItem({ commit, state }) {
     //api
     const ans = confirm("本当に削除しますか？");
-    if (ans) commit(MutationTypes.ITEM_DELETE_SUCCESS);
+    if (ans) {
+      axios
+        .delete(
+          `/api/v1/private/backlogs/${state.backlogId}/backlog_items/destroy.json`,
+          {
+            data:
+            {
+              id: state.columns[state.itemModalInfo.columnIndex].items[state.itemModalInfo.itemIndex].id,
+            }
+          }
+        )
+        .then(response => {
+          commit(MutationTypes.ITEM_DELETE_SUCCESS);;
+        })
+        .catch(error => {
+          commit(MutationTypes.API_FAILURE, error);
+        });
+    }
   },
   editItemName({ commit }, name) {
     commit(MutationTypes.SET_ITEM_MODAL_INFO_NAME, name);
+  },
+  editItemDescription({ commit }, description) {
+    commit(MutationTypes.SET_ITEM_MODAL_INFO_DESCRIPTION, description);
   },
   newItem({ commit }, index) {
     var itemModalInfo = {
@@ -136,16 +215,64 @@ export default {
     commit(MutationTypes.SET_COLUMN_MODAL_INFO_NAME, name);
   },
   updateColumn({ commit, state }) {
-    //api
-    commit(MutationTypes.COLUMN_UPDATE_SUCCESS);
+    const column = state.columnModalInfo.column
+
+    axios
+      .put(
+        `/api/v1/private/backlogs/${state.backlogId}/backlog_columns/update.json`,
+        {
+          id: column.id,
+          name: column.name,
+          color: column.color,
+          //parent_id: 0,//要修正
+
+        }
+      )
+      .then(response => {
+        //api
+        commit(MutationTypes.COLUMN_UPDATE_SUCCESS);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
   createColumn({ commit, state }) {
-    //api
-    commit(MutationTypes.COLUMN_CREATE_SUCCESS);
+    const column = state.columnModalInfo.column
+    axios
+      .post(
+        `/api/v1/private/backlogs/${state.backlogId}/backlog_columns/create.json`,
+        {
+          name: column.name,
+          color: column.color,
+          //parent_id: 0,//要修正
+        }
+      )
+      .then(response => {
+        commit(MutationTypes.COLUMN_CREATE_SUCCESS, response);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
   },
   deleteColumn({ commit, state }) {
-    //api
-    const ans = confirm("本当に削除しますか？");
-    if (ans) commit(MutationTypes.COLUMN_DELETE_SUCCESS);
+    const ans = confirm("本当に削除しますか?");
+    if (ans) {
+      axios
+        .delete(
+          `/api/v1/private/backlogs/${state.backlogId}/backlog_columns/destroy.json`,
+          {
+            data:
+            {
+              id: state.columnModalInfo.column.id,
+            }
+          }
+        )
+        .then(response => {
+          commit(MutationTypes.COLUMN_DELETE_SUCCESS);;
+        })
+        .catch(error => {
+          commit(MutationTypes.API_FAILURE, error);
+        });
+    }
   }
 };

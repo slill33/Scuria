@@ -1,38 +1,36 @@
 module PrivateApi
   class BacklogsController < ApplicationController
     COLUMN_KEYS = %i(id name color position)
-    ITEM_KEYS   = %i(id name point priority)
-    TAG_KEYS    = %i(id name)
-    USER_KEYS   = %i(id name)
+    ITEM_KEYS = %i(id name point priority description)
+    TAG_KEYS = %i(id name)
+    USER_KEYS = %i(id name)
 
     skip_before_action :verify_authenticity_token
 
     before_action :parse_request_body, only: [:update_column_location, :update_item_location]
     before_action :find_backlog
 
-
     def get_columns_and_items
       render json: {
-        status:  200,
+        status: 200,
         message: {
           columns: get_columns_and_association_items,
           tags: get_normalize_backlog_tag_records,
-          users: get_normalize_user_records
+          users: get_normalize_user_records,
         },
       }.to_json
     rescue
       render json: "internal server error", status: :internal_server_error
     end
 
-
     def update_item_location
       status = _update_item_location
 
       case status
-      when 200 then
+      when 200
         render json: { status: 200, message: "ok" }.to_json
       else
-        render status: :internal_server_error, json: {status: 500, message: 'Internal Server Error'}.to_json
+        render status: :internal_server_error, json: { status: 500, message: "Internal Server Error" }.to_json
       end
     end
 
@@ -40,10 +38,10 @@ module PrivateApi
       status = _update_column_location
 
       case status
-      when 200 then
+      when 200
         render json: { status: 200, message: "ok" }.to_json
       else
-        render status: :internal_server_error, json: {status: 500, message: 'Internal Server Error'}.to_json
+        render status: :internal_server_error, json: { status: 500, message: "Internal Server Error" }.to_json
       end
     end
 
@@ -59,19 +57,18 @@ module PrivateApi
     end
 
     concerning :GetMethod do
-
       def get_columns_and_association_items
-        return get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items)).sort_by {|column| column[:position]}
+        return get_normalize_info(@backlog.backlog_columns, COLUMN_KEYS, %i(items)).sort_by { |column| column[:position] }
       end
 
       def get_items_by_column(column)
-        return get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by {|item| item[:priority]}
+        return get_normalize_info(column.backlog_items, ITEM_KEYS, %i(tags users)).sort_by { |item| item[:priority] }
       end
 
       def get_normalize_info(obj_arrays, keys, additional_obj_keys)
         info = obj_arrays.map do |obj|
-          info = keys.reduce({}) {|memo, key|
-            memo.tap {|me| me[key] = obj[key] }
+          info = keys.reduce({}) { |memo, key|
+            memo.tap { |me| me[key] = obj[key] }
           }
 
           additional_obj_keys.each do |key|
@@ -86,19 +83,18 @@ module PrivateApi
 
       def additional_obj(symbolize_key, obj)
         case symbolize_key
-        when :tags  then
+        when :tags
           # obj -> backlog_item
           obj.backlog_tags.pluck(:id)
-        when :users then
+        when :users
           # obj -> backlog_item
           obj.users.pluck(:id)
-        when :items then
+        when :items
           get_items_by_column(obj)
         else
           []
         end
       end
-
 
       %w(backlog_tag user).each do |model_name|
         define_method("get_normalize_#{model_name}_records") do |root_key: :id, attr_names: %i(name)|
@@ -108,12 +104,12 @@ module PrivateApi
       end
 
       def normalize_obj_records(objs, root_key, attr_names)
-        return objs.pluck(root_key, *attr_names).reduce({}) {|memo, obj|
-          h = {}
-          attr_names.each.with_index(1) {|attr_name, idx| h["#{attr_name}".intern] = obj[idx] }
+        return objs.pluck(root_key, *attr_names).reduce({}) { |memo, obj|
+                 h = {}
+                 attr_names.each.with_index(1) { |attr_name, idx| h["#{attr_name}".intern] = obj[idx] }
 
-          memo.tap {|me| me["#{obj.first}".intern] = h }
-        }
+                 memo.tap { |me| me["#{obj.first}".intern] = h }
+               }
       end
 
       def backlog_tag_objs
@@ -131,20 +127,20 @@ module PrivateApi
       ####################
       def _update_item_location
         update_target_item = BacklogItem.find_by_id(@params[:backlog_item_id])
-        new_column_id      = @params[:new_column_id]
-        old_column_id      = update_target_item.backlog_column_id
-        @new_priority      = @params[:new_priority]
-        @old_priority      = update_target_item.priority
+        new_column_id = @params[:new_column_id]
+        old_column_id = update_target_item.backlog_column_id
+        @new_priority = @params[:new_priority]
+        @old_priority = update_target_item.priority
 
         begin
           @shift_target_items = BacklogColumn.find_by_id(old_column_id).backlog_items
 
           ActiveRecord::Base.transaction do
-            if old_column_id != new_column_id then
+            if old_column_id != new_column_id
               update_priority_across_columns(new_column_id)
-            elsif @new_priority > @old_priority then
+            elsif @new_priority > @old_priority
               raise_priority
-            elsif @old_priority > @new_priority then
+            elsif @old_priority > @new_priority
               lower_priority
             end
 
@@ -184,7 +180,6 @@ module PrivateApi
         BacklogItem.decrement_counter(:priority, target_ids)
       end
 
-
       ######################
       # for backlog_column #
       ######################
@@ -195,16 +190,15 @@ module PrivateApi
         #  new_position: 3
         #}
         update_target_column = BacklogColumn.find_by_id(@params[:backlog_column_id])
-        @new_position        = @params[:new_position]
-        @old_position        = update_target_column.position
+        @new_position = @params[:new_position]
+        @old_position = update_target_column.position
 
-        @shift_target_columns = BacklogColumn.where(backlog_id: @params[:backlog_id])
-
+        @shift_target_columns = BacklogColumn.where(backlog_id: params[:id])
         begin
           ActiveRecord::Base.transaction do
-            if @old_position < @new_position then
+            if @old_position < @new_position
               raise_position
-            elsif @new_position < @old_position then
+            elsif @new_position < @old_position
               lower_position
             end
 
@@ -236,27 +230,24 @@ module PrivateApi
       def decrement_backlog_columns_position(target_ids)
         BacklogColumn.decrement_counter(:position, target_ids)
       end
-
     end
-
 
     def backlog_item_params
       @paramas.require(:backlog_item).permit(:priority, :backlog_column_id)
     end
 
     def normalize_update_infos(keys, update_infos, *subordinate_infos)
-      infos = update_infos.map {|update_info|
-        keys.map(&:intern).reduce({}) {|obj, key|
-          obj.tap {|me| me[key] = update_info[key]}
+      infos = update_infos.map { |update_info|
+        keys.map(&:intern).reduce({}) { |obj, key|
+          obj.tap { |me| me[key] = update_info[key] }
         }
       }
 
-      subordinate_infos.keys {|key|
+      subordinate_infos.keys { |key|
         infos[key] = subordinate_infos[key]
       } unless subordinate_infos.empty?
 
       return infos
     end
-
   end
 end

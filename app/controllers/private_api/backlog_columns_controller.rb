@@ -1,7 +1,6 @@
 module PrivateApi
   class BacklogColumnsController < ApplicationController
-
-    before_action :parse_request_body,  only: [:create, :update, :destroy]
+    before_action :parse_request_body, only: [:create, :update, :destroy]
     before_action :find_backlog_column, only: [:update, :destroy]
 
     skip_before_action :verify_authenticity_token
@@ -13,10 +12,10 @@ module PrivateApi
     #}
     def create
       @bc = BacklogColumn.new(
-        backlog_id: @params[:backlog_id],
-        name:       @params[:name],
-        color:      @params[:color],
-        position:   new_position
+        backlog_id: params[:id],
+        name: @params[:name],
+        color: @params[:color],
+        position: new_position,
       )
 
       if @bc.valid?
@@ -28,7 +27,7 @@ module PrivateApi
     end
 
     def update
-      @bc.name  = @params[:name]
+      @bc.name = @params[:name]
       @bc.color = @params[:color]
 
       if @bc.valid?
@@ -53,7 +52,7 @@ module PrivateApi
     private
 
     def end_of_position
-      return BacklogColumn.where(backlog_id: @params[:backlog_id]).pluck(:position).max || -1
+      return BacklogColumn.where(backlog_id: params[:id]).pluck(:position).max || -1
     end
 
     def new_position
@@ -75,6 +74,5 @@ module PrivateApi
       body = request.body.read
       @params ||= JSON.parse(body, symbolize_names: true)
     end
-
   end
 end
