@@ -1,8 +1,9 @@
 module PrivateApi
-  class BacklogColumnsController < ApplicationController
+  class BacklogColumnsController < ApiController
     before_action :parse_request_body, only: [:create, :update, :destroy]
     before_action :find_backlog_column, only: [:update, :destroy]
-
+    before_action :check_session
+    before_action :check_role, only: [:create, :update, :destroy]
     skip_before_action :verify_authenticity_token
 
     #{

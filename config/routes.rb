@@ -28,4 +28,5 @@ Rails.application.routes.draw do
   match "/api/v1/private/backlogs/:id/backlog_items/update.json", controller: :"private_api/backlog_items", action: :update, format: false, via: [:put]
   match "/api/v1/private/backlogs/:id/backlog_items/destroy.json", controller: :"private_api/backlog_items", action: :destroy, format: false, via: [:delete]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+
 end

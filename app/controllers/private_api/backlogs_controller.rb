@@ -1,5 +1,5 @@
 module PrivateApi
-  class BacklogsController < ApplicationController
+  class BacklogsController < ApiController
     COLUMN_KEYS = %i(id name color position)
     ITEM_KEYS = %i(id name point priority description)
     TAG_KEYS = %i(id name)
@@ -9,6 +9,7 @@ module PrivateApi
 
     before_action :parse_request_body, only: [:update_column_location, :update_item_location]
     before_action :find_backlog
+    before_action :check_session
 
     def get_columns_and_items
       render json: {

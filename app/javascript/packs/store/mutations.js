@@ -10,7 +10,7 @@ export const mutations = {
     state.users = posts.message.users
   },
   [MUTATION_TYPES.API_FAILURE](state, error) {
-    alert(error);
+    alert(error.response.data.message);
   },
   [MUTATION_TYPES.SET_COLUMNS](state, val) {
     state.columns = val;
