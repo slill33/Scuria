@@ -14,7 +14,10 @@ gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'mini_racer', platforms: :ruby
+gem 'mini_racer', platforms: :ruby
+
+#gem 'therubyracer'
+gem 'libv8'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
@@ -50,6 +53,11 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Pry & extensions
   gem 'pry-rails'
+  # Capistrano
+  gem "capistrano", "~> 3.10", require: false
+  gem "capistrano-rails", "~> 1.6", require: false
+  gem 'capistrano-rbenv', '~> 2.2', require: false
+  gem 'capistrano3-puma', '~> 3.1', require: false
 end
 
 group :test do
