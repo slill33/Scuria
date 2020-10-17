@@ -4,12 +4,8 @@ module PrivateApi
       api_session = ApiSession.find_by_hash_key(cookies[:hash_key])
       current_user = User.find_by_id(api_session.user_id)
 
-      if api_session == nil || api_session.expire_at < Time.now
-        render json: { message: "セッションが正しくありません" }, status: 601
-      end
-
-      if UserToBacklog.where(user_id: current_user.id).pluck(:backlog_id).include?(params[:id].to_i) == false
-        render json: { message: "不正なユーザーIDです" }, status: 602
+      if api_session == nil || api_session.expire_at < Time.now || UserToBacklog.where(user_id: current_user.id).pluck(:backlog_id).include?(params[:id].to_i) == false
+        render json: { message: "セッションが正しくありません" }, status: 401
       end
     end
 
@@ -19,7 +15,7 @@ module PrivateApi
       role = TeamRole.find_by_id(UserToBacklog.where(user_id: current_user.id, backlog_id: params[:id]).first.team_role_id).name
       ##if role != "ScrumMaster" && role !="ProductOwner"
       if role == "Member"
-        render json: { message: "権限がありません" }, status: 603
+        render json: { message: "Memberには許可されていません" }, status: 403
       end
     end
   end
