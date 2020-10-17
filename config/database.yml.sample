@@ -55,4 +55,4 @@ production:
   <<: *default
   database: scuria_production
   username: scuria
-  password: <%= ENV['SATORI_DATABASE_PASSWORD'] %>
+  password: <%= ENV['SCURIA_DATABASE_PASSWORD'] %>
