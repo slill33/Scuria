@@ -262,7 +262,7 @@ module PrivateApi
           item_parent.backlog_column_id = item_backlog_column_parent.id if item_parent.children.all? {|_item_parent_child|
             _item_parent_child.backlog_column.id == item.backlog_column.id
           }
-          item_parent.priority = maximum_priority(item_backlog_column_parent.backlog_items) + 1
+          item_parent.priority = increment_priority(maximum_priority(item_backlog_column_parent.backlog_items))
           item_parent.save!
 
           item = item_parent
@@ -272,7 +272,13 @@ module PrivateApi
       end
 
       def maximum_priority(items)
-        return items.empty? ? 0 : items.maximum(:priority) + 1
+        return 0 if items.empty?
+        return items.maximum(:priority)
+      end
+
+      def increment_priority(max_priority)
+        return max_priority if max_priority == 0
+        return max_priority + 1
       end
 
     end
