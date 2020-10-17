@@ -1,10 +1,11 @@
 class User < ApplicationRecord
   belongs_to :team
-  has_many :user_to_backlog_items
+  has_many :user_to_backlog_items, dependent: :destroy
   has_many :backlog_items, through: :user_to_backlog_items
-  has_many :user_to_backlogs
+  has_many :user_to_backlogs, dependent: :destroy
   has_many :backlogs, through: :user_to_backlogs
   has_many :team_roles, through: :user_to_backlogs
+  has_many :api_sessions
 
   acts_as_paranoid
   devise :invitable, :database_authenticatable, :registerable,
