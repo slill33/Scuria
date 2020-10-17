@@ -1,8 +1,9 @@
 module PrivateApi
-  class BacklogItemsController < ApplicationController
+  class BacklogItemsController < ApiController
     before_action :parse_request_body, only: [:create, :update, :destroy]
     before_action :find_backlog_item, only: [:update, :destroy]
-
+    before_action :check_session
+    before_action :check_role, only: [:create, :destroy]
     skip_before_action :verify_authenticity_token
 
     #{
