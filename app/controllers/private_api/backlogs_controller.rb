@@ -237,7 +237,7 @@ module PrivateApi
         item_parent = item.parent
 
         return if item_parent.nil?
-        return if item_parent.backlog_column.parent.nil?
+        return if item.backlog_column.parent.nil?
 
         parent_exists = true
         while parent_exists do
@@ -249,7 +249,7 @@ module PrivateApi
           item = item_parent
           item_parent = item.parent
 
-          parent_exists = false if item_parent.nil? || item_parent.backlog_column.parent.nil?
+          parent_exists = false if item_parent.nil? || item.backlog_column.parent.nil?
         end
       end
 
