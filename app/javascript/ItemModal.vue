@@ -15,7 +15,14 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="mail2">説明</label>
-                <textarea class="form-control" placeholder="Description" style="height:6.5rem"></textarea>
+                <textarea
+                class="form-control"
+                placeholder="Description"
+                style="height:6.5rem"
+                v-bind:value="itemModalInfo.item.description"
+                @input="editItemDescription($event.target.value)"
+                >
+                </textarea>
               </div>
               <div class="col-md-6">
                 <div class="modal-right-content">
@@ -131,7 +138,8 @@ export default {
       "updateItem",
       "createItem",
       "deleteItem",
-      "editItemName"
+      "editItemName",
+      "editItemDescription"
     ])
   },
   watch: {},
