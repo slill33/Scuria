@@ -236,11 +236,7 @@ module PrivateApi
       def recursive_move_parent_items(item)
         item_parent = item.parent
 
-        return if item_parent.nil?
-        return if item.backlog_column.parent.nil?
-
-        parent_exists = true
-        while parent_exists do
+        until item_parent.nil? || item.backlog_column.parent.nil? do
           item_parent.backlog_column_id = item.backlog_column.parent.id if item_parent.children.all? {|_item_parent_child|
             _item_parent_child.backlog_column.id == item.backlog_column.id
           }
@@ -248,8 +244,6 @@ module PrivateApi
 
           item = item_parent
           item_parent = item.parent
-
-          parent_exists = false if item_parent.nil? || item.backlog_column.parent.nil?
         end
       end
 
