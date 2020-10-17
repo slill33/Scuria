@@ -5,6 +5,7 @@ class User < ApplicationRecord
   has_many :user_to_backlogs
   has_many :backlogs, through: :user_to_backlogs
   has_many :team_roles, through: :user_to_backlogs
+  has_many :api_sessions
 
   acts_as_paranoid
   devise :invitable, :database_authenticatable, :registerable,
