@@ -1,0 +1,21 @@
+.container
+  h1 ユーザー編集
+  = form_for @user do |f|
+    .form-group
+      .field
+        = f.label :super,"権限"
+        br/
+        = f.select :super, [["管理者ユーザー", true], ["一般ユーザー", false]], { selected:@user.super} ,{class: "form-control"}
+    .form-group
+      .field
+        = f.label :name
+        br/
+        = f.text_field :name ,{class: "form-control"}
+    .form-group
+      .field
+        = f.label :email
+        br/
+        = f.email_field :email,class: "form-control", autofocus: true, autocomplete: "email"
+    .form-group
+      .actions
+        = f.submit "更新" ,class:"btn btn-primary"

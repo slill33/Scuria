@@ -1,0 +1,25 @@
+- provide(:title, 'All users')
+.notifications
+  - flash.each do |key, value|
+    = content_tag(:div, value, class: key)
+.container
+  h1 ユーザー一覧
+  .invite-box
+    = link_to "ユーザー招待", new_user_invitation_path
+  ul.users-box
+    table
+      tr
+        th.id ID
+        th.name 名前
+        th メールアドレス
+        th.role 権限
+        th 編集
+        th 削除
+      - @users.each do |user|
+        tr
+          td.id= user.id
+          td.name= user.name
+          td= user.email
+          td.role= user.super == true ? "管理者" : "一般"
+          td= link_to(content_tag(:i, 'edit', class: 'material-icons md-25 edit-backlog'), edit_user_path(user))
+          td= link_to(content_tag(:i, 'close', class: 'material-icons md-25'), user_path(user), :method => :delete, class:'delete-backlog',method: :delete, data: { confirm: '本当に削除しますか?' })
