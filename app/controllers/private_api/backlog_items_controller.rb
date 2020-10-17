@@ -21,6 +21,7 @@ module PrivateApi
       @point = @params[:point],
       @user_ids = @params[:user_ids]
       @tag_ids = @params[:tag_ids]
+      @child_backlog_id = @params[:child_backlog_id]
 
       @bc = BacklogColumn.find_by_id(@backlog_column_id)
 
@@ -48,6 +49,7 @@ module PrivateApi
       @bi.name = @params[:name]
       @bi.point = @params[:point]
       @bi.description = @params[:description]
+      @bi.child_backlog_id = @params[:child_backlog_id]
       @user_ids = @params[:user_ids]
       @tag_ids = @params[:tag_ids]
 
