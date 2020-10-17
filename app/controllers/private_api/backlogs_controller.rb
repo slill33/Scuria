@@ -1,7 +1,7 @@
 module PrivateApi
   class BacklogsController < ApiController
     COLUMN_KEYS = %i(id name color position parent_id)
-    ITEM_KEYS = %i(id name point priority description child_backlog_id)
+    ITEM_KEYS = %i(id name point priority description child_backlog_id parent_id)
     TAG_KEYS = %i(id name)
     USER_KEYS = %i(id name)
 
