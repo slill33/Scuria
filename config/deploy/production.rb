@@ -62,4 +62,4 @@ server "scuria.site", user: "scuria", roles: %w{app web}
 #     # password: "please use keys"
 #   }
 
-set :puma_conf, "#{current_path}/config/puma/production.rb"
+set :puma_conf, "#{shared_path}/config/puma/production.rb"
