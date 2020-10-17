@@ -5,7 +5,7 @@ class Backlog < ApplicationRecord
   belongs_to :parent, class_name: "Backlog", foreign_key: "parent_id", optional: true
   belongs_to :backlog_type
   has_many :backlog_items
-  has_many :user_to_backlogs
+  has_many :user_to_backlogs, dependent: :destroy
   has_many :users, through: :user_to_backlogs
   has_many :user_to_backlog_items
   #has_many :team_roles, through: :user_to_backlogs
