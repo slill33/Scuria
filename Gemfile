@@ -53,6 +53,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   # Pry & extensions
   gem 'pry-rails'
+  gem 'pry-byebug'
   # Capistrano
   gem "capistrano", "~> 3.10", require: false
   gem "capistrano-rails", "~> 1.6", require: false

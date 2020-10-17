@@ -17,6 +17,7 @@ module PrivateApi
         name: @params[:name],
         color: @params[:color],
         position: new_position,
+        parent_id: @params[:parent_id]
       )
 
       if @bc.valid?
@@ -30,6 +31,7 @@ module PrivateApi
     def update
       @bc.name = @params[:name]
       @bc.color = @params[:color]
+      @bc.parent_id =  @params[:parent_id]
 
       if @bc.valid?
         @bc.save!

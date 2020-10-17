@@ -44,13 +44,6 @@ ActiveRecord::Schema.define(version: 2020_10_14_132435) do
     t.datetime "updated_at"
   end
 
-  create_table "backlog_item_to_child_backlog", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "backlog_item_id", default: 0, null: false, unsigned: true
-    t.integer "backlog_id", default: 0, null: false, unsigned: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "backlog_items", id: :integer, unsigned: true, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.integer "point", default: 0, null: false, unsigned: true

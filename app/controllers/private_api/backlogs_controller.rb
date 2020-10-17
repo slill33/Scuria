@@ -1,7 +1,7 @@
 module PrivateApi
   class BacklogsController < ApiController
-    COLUMN_KEYS = %i(id name color position)
-    ITEM_KEYS = %i(id name point priority description)
+    COLUMN_KEYS = %i(id name color position parent_id)
+    ITEM_KEYS = %i(id name point priority description child_backlog_id)
     TAG_KEYS = %i(id name)
     USER_KEYS = %i(id name)
 
@@ -166,6 +166,8 @@ module PrivateApi
             end
 
             update_target_item.update!(backlog_column_id: new_column_id, priority: @new_priority)
+
+            recursive_move_parent_items(update_target_item) if old_column_id != new_column_id
           end
 
           return 200
@@ -251,6 +253,21 @@ module PrivateApi
       def decrement_backlog_columns_position(target_ids)
         BacklogColumn.decrement_counter(:position, target_ids)
       end
+
+      def recursive_move_parent_items(item)
+        item_parent = item.parent
+
+        until item_parent.nil? || item.backlog_column.parent.nil? do
+          item_parent.backlog_column_id = item.backlog_column.parent.id if item_parent.children.all? {|_item_parent_child|
+            _item_parent_child.backlog_column.id == item.backlog_column.id
+          }
+          item_parent.save!
+
+          item = item_parent
+          item_parent = item.parent
+        end
+      end
+
     end
 
     def backlog_item_params
