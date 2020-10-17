@@ -7,7 +7,7 @@ export default {
   getBacklog({ commit, state }) {
     axios
       .get(
-        `/api/v1/private/backlogs/${state.backlogId}/columns_and_items_get.json`
+        `/api/v1/private/backlogs/${state.backlogId}/columns_and_items_get.json`,
       )
       .then(response => {
         commit(MutationTypes.GET_BACKLOG_SUCCESS, response.data);
