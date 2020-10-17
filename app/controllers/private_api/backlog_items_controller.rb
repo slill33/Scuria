@@ -50,6 +50,7 @@ module PrivateApi
       @bi.point = @params[:point]
       @bi.description = @params[:description]
       @bi.child_backlog_id = @params[:child_backlog_id]
+      @bi.parent_id = @params[:parent_id]
       @user_ids = @params[:user_ids]
       @tag_ids = @params[:tag_ids]
 
