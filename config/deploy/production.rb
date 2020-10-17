@@ -61,3 +61,5 @@ server "scuria.local", user: "vagrant", roles: %w{app web}
 #     auth_methods: %w(publickey password)
 #     # password: "please use keys"
 #   }
+
+set :puma_conf, "#{current_path}/config/puma/production.rb"
