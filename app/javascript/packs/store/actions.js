@@ -93,7 +93,6 @@ export default {
   updateItem({ commit, state }) {
     commit(MutationTypes.FORMAT_ITEM_MODAL_INFO);
     const item = state.itemModalInfo.item
-
     axios
       .put(
         `/api/v1/private/backlogs/${state.backlogId}/backlog_items/update.json`,
@@ -104,8 +103,8 @@ export default {
           description: item.description,
           user_ids: item.users,
           tag_ids: item.tags,
-          parent_id: 0,//要修正
-
+          parent_id: item.parent_id,
+          child_backlog_id: item.child_backlog_id
         }
       )
       .then(response => {
@@ -129,8 +128,8 @@ export default {
           description: item.description,
           user_ids: item.users,
           tag_ids: item.tags,
-          parent_id: 0,//要修正
-
+          parent_id: item.parent_id,
+          child_backlog_id: item.child_backlog_id
         }
       )
       .then(response => {
@@ -180,7 +179,10 @@ export default {
         name: "",
         tags: [],
         users: [],
-        point: ""
+        point: 0,
+        description: "",
+        parent_id: 0,
+        child_backlog_id: 0
       }
     };
     commit(MutationTypes.SET_ITEM_MODAL_INFO, itemModalInfo);
@@ -206,7 +208,8 @@ export default {
       column: {
         name: "",
         color: "#4D4D4D",
-        items: []
+        items: [],
+        parent_id: 0,
       }
     };
     commit(MutationTypes.EDIT_COLUMN_MODAL_INFO, columnModalInfo);
@@ -224,7 +227,7 @@ export default {
           id: column.id,
           name: column.name,
           color: column.color,
-          //parent_id: 0,//要修正
+          parent_id: column.parent_id,
 
         }
       )
@@ -244,6 +247,7 @@ export default {
         {
           name: column.name,
           color: column.color,
+          parent_id: column.parent_id,
           //parent_id: 0,//要修正
         }
       )
@@ -274,5 +278,14 @@ export default {
           commit(MutationTypes.API_FAILURE, error);
         });
     }
-  }
+  },
+  editColumnParentColumn({ commit }, parentId) {
+    commit(MutationTypes.EDIT_COLUMN_PARENT_COLUMN, parentId);
+  },
+  editItemChildBacklog({ commit }, childId) {
+    commit(MutationTypes.EDIT_ITEM_CHILD_BACKLOG, childId);
+  },
+  editItemParentItem({ commit }, parentId) {
+    commit(MutationTypes.EDIT_ITEM_PARENT_ITEM, parentId);
+  },
 };

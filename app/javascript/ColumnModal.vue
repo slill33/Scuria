@@ -12,13 +12,52 @@
             v-bind:value="columnModalInfo.column.name"
             @input="editColumnName($event.target.value)"
           />
+          <div v-if="Object.keys(parentColumns).length > 0">
+            <label for="parent-column">親カラム</label>
+            <select
+              class="form-control"
+              placeholder="parent-column"
+              v-bind:value="columnModalInfo.column.parent_id"
+              @change="editColumnParentColumn($event.target.value)"
+            >
+              >
+              <option :value="0">選択してください</option>
+              <option
+                v-for="(value, key) in parentColumns"
+                :key="value.name"
+                :value="Number(key)"
+                >{{ value.name }}</option
+              >
+            </select>
+          </div>
           <label for="Color">Color</label>
           <picker v-model="color" class="mx-auto"></picker>
         </div>
         <footer class="modal-footer">
-          <button type="button" class="btn btn-danger mr-auto" @click="deleteColumn()" v-show="columnModalInfo.new===false">削除</button>
-          <button type="button" class="btn btn-primary" @click="updateColumn()" v-show="columnModalInfo.new===false">変更</button>
-          <button type="button" class="btn btn-primary" @click="createColumn()" v-show="columnModalInfo.new">作成</button>
+          <button
+            type="button"
+            class="btn btn-danger mr-auto"
+            @click="deleteColumn()"
+            v-show="columnModalInfo.new === false"
+          >
+            削除
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="updateColumn()"
+            v-show="columnModalInfo.new === false"
+          >
+            変更
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            @click="createColumn()"
+            v-show="columnModalInfo.new"
+          >
+            作成
+          </button>
         </footer>
       </div>
     </div>
@@ -29,7 +68,7 @@ import { mapState, mapActions } from "vuex";
 import { Compact } from "vue-color";
 export default {
   components: {
-    picker: Compact
+    picker: Compact,
   },
   methods: {
     ...mapActions([
@@ -38,21 +77,22 @@ export default {
       "editColumnName",
       "updateColumn",
       "deleteColumn",
-      "createColumn"
-    ])
+      "createColumn",
+      "editColumnParentColumn",
+    ]),
   },
   watch: {},
   computed: {
-    ...mapState(["columnModalInfo"]),
+    ...mapState(["columnModalInfo", "parentColumns"]),
     color: {
       get() {
         return this.$store.state.columnModalInfo.column.color;
       },
       set(val) {
         this.setColumnColor(val);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -153,4 +193,4 @@ export default {
 .modal-content-2rows {
   margin-bottom: 0;
 }
-</style> 
+</style>
