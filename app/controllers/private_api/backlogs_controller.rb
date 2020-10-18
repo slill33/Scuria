@@ -256,16 +256,37 @@ module PrivateApi
 
       def recursive_move_parent_items(item)
         item_parent = item.parent
+        item_backlog_column_parent = item.backlog_column.parent
 
-        until item_parent.nil? || item.backlog_column.parent.nil? do
-          item_parent.backlog_column_id = item.backlog_column.parent.id if item_parent.children.all? {|_item_parent_child|
+        until item_parent.nil? || item_backlog_column_parent.nil? do
+          shift_target_parent_items = item_parent.backlog_column.backlog_items
+
+          if item_parent.children.all? {|_item_parent_child|
             _item_parent_child.backlog_column.id == item.backlog_column.id
           }
-          item_parent.save!
+            item_parent.backlog_column_id = item_backlog_column_parent.id
+
+            ActiveRecord::Base.transaction do
+              decrement_backlog_items_priority(item_ids(
+                shift_target_parent_items,
+                item_parent.priority + 1,
+                shift_target_parent_items.maximum(:priority)))
+              item_parent.priority = maximum_priority(item_backlog_column_parent.backlog_items) + 1
+
+              item_parent.save!
+            end
+
+          end
 
           item = item_parent
           item_parent = item.parent
+          item_backlog_column_parent = item.backlog_column.parent
         end
+      end
+
+      def maximum_priority(items)
+        return -1 if items.empty?
+        return items.maximum(:priority)
       end
 
     end
