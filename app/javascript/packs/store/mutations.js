@@ -8,6 +8,9 @@ export const mutations = {
     state.columns = posts.message.columns;
     state.tags = posts.message.tags
     state.users = posts.message.users
+    state.parentColumns = posts.message.parent_backlog_columns
+    state.childBacklogs = posts.message.child_backlogs
+    state.parentItems = posts.message.allocated_items_from_parent_backlog
   },
   [MUTATION_TYPES.API_FAILURE](state, error) {
     alert(error.response.data.message);
@@ -113,5 +116,14 @@ export const mutations = {
     state.columnModalInfo.column.id = response.data.created_column_id
     state.columns.push(state.columnModalInfo.column);
     state.columnModalFlag = false;
+  },
+  [MUTATION_TYPES.EDIT_COLUMN_PARENT_COLUMN](state, parentId) {
+    state.columnModalInfo.column.parent_id = parentId;
+  },
+  [MUTATION_TYPES.EDIT_ITEM_CHILD_BACKLOG](state, childId) {
+    state.itemModalInfo.item.child_backlog_id = childId;
+  },
+  [MUTATION_TYPES.EDIT_ITEM_PARENT_ITEM](state, parentId) {
+    state.itemModalInfo.item.parent_id = parentId;
   }
 }

@@ -14,13 +14,55 @@
           <div class="modal-content-2rows">
             <div class="form-row">
               <div class="form-group col-md-6">
-                <label for="mail2">説明</label>
+                <div v-if="Object.keys(parentItems).length > 0">
+                  <label for="ParentItem">親アイテム</label>
+                  <select
+                    class="form-control"
+                    placeholder="ParentItem"
+                    v-bind:value="itemModalInfo.item.parent_id"
+                    @change="editItemParentItem($event.target.value)"
+                  >
+                    <option :value="0">選択してください</option>
+                    <option
+                      v-for="(value, key) in parentItems"
+                      :key="value.name"
+                      :value="Number(key)"
+                      >{{ value.name }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div v-if="Object.keys(childBacklogs).length > 0">
+                  <label for="ChildBacklogs">子バックログ</label>
+                  <select
+                    class="form-control"
+                    placeholder="ChildBacklogs"
+                    v-bind:value="itemModalInfo.item.child_backlog_id"
+                    @change="editItemChildBacklog($event.target.value)"
+                  >
+                    <option :value="0">選択してください</option>
+                    <option
+                      v-for="(value, key) in childBacklogs"
+                      :key="value.name"
+                      :value="Number(key)"
+                      >{{ value.name }}</option
+                    >
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-content-2rows">
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="description">説明</label>
                 <textarea
-                class="form-control"
-                placeholder="Description"
-                style="height:6.5rem"
-                v-bind:value="itemModalInfo.item.description"
-                @input="editItemDescription($event.target.value)"
+                  class="form-control"
+                  placeholder="Description"
+                  style="height:6.5rem"
+                  v-bind:value="itemModalInfo.item.description"
+                  @input="editItemDescription($event.target.value)"
                 >
                 </textarea>
               </div>
@@ -34,7 +76,9 @@
                     @change="editPoint($event.target.value)"
                   >
                     <option :value="0">選択してください</option>
-                    <option :value="Number(n)" v-for="n of 89" :key="n">{{n}}</option>
+                    <option :value="Number(n)" v-for="n of 89" :key="n">{{
+                      n
+                    }}</option>
                   </select>
                 </div>
                 <div class="modal-right-content">
@@ -42,26 +86,34 @@
                     <p>作業者</p>
                     <i class="material-icons md-24" @click="addUser()">add</i>
                   </div>
-                  <div v-show="itemModalInfo.item.users.length>0">
+                  <div v-show="itemModalInfo.item.users.length > 0">
                     <!-- <span v-for="tagId in item.tags" :key="tagId" class="tag">{{tags[tagId].name}}</span> -->
                     <div
                       v-for="(userId, index) in itemModalInfo.item.users"
                       class="modal-right-content-form-box"
-                      :key="userId + '_' +index"
+                      :key="userId + '_' + index"
                     >
                       <select
                         class="form-control"
                         placeholder="作業者"
                         v-bind:value="itemModalInfo.item.users[index]"
-                        @change="changeUser({userId:$event.target.value,index:index})"
+                        @change="
+                          changeUser({
+                            userId: $event.target.value,
+                            index: index,
+                          })
+                        "
                       >
                         <option
                           v-for="(value, key) in users"
                           :key="value.name"
                           :value="Number(key)"
-                        >{{value.name}}</option>
+                          >{{ value.name }}</option
+                        >
                       </select>
-                      <i class="material-icons md-24 column-header-icon">clear</i>
+                      <i class="material-icons md-24 column-header-icon"
+                        >clear</i
+                      >
                     </div>
                   </div>
                 </div>
@@ -75,12 +127,21 @@
                       v-for="(value, key) in tags"
                       :key="key"
                       class="modal-tag"
-                      v-bind:class="{'setting-modal-tag':itemModalInfo.item.tags.indexOf(Number(key))!= -1}"
+                      v-bind:class="{
+                        'setting-modal-tag':
+                          itemModalInfo.item.tags.indexOf(Number(key)) != -1,
+                      }"
                       @click="toggleTag(key)"
-                    >{{value.name}}</span>
-                    <i class="material-icons md-24" @click="showTagField">add</i>
+                      >{{ value.name }}</span
+                    >
+                    <i class="material-icons md-24" @click="showTagField"
+                      >add</i
+                    >
                   </div>
-                  <div class="modal-right-content-form-box" v-show="itemModalInfo.tagField">
+                  <div
+                    class="modal-right-content-form-box"
+                    v-show="itemModalInfo.tagField"
+                  >
                     <input
                       type="text"
                       id="text1"
@@ -91,7 +152,8 @@
                     <i
                       class="material-icons md-24 column-header-icon"
                       @click="addTag(itemModalInfo.tagName)"
-                    >check</i>
+                      >check</i
+                    >
                   </div>
                 </div>
               </div>
@@ -102,21 +164,27 @@
           <button
             type="button"
             class="btn btn-danger mr-auto"
-            v-show="itemModalInfo.new===false"
+            v-show="itemModalInfo.new === false"
             @click="deleteItem()"
-          >削除</button>
+          >
+            削除
+          </button>
           <button
             type="button"
             class="btn btn-primary"
-            v-show="itemModalInfo.new===false"
+            v-show="itemModalInfo.new === false"
             @click="updateItem()"
-          >変更</button>
+          >
+            変更
+          </button>
           <button
             type="button"
             class="btn btn-primary"
             v-show="itemModalInfo.new"
             @click="createItem()"
-          >作成</button>
+          >
+            作成
+          </button>
         </footer>
       </div>
     </div>
@@ -139,13 +207,22 @@ export default {
       "createItem",
       "deleteItem",
       "editItemName",
-      "editItemDescription"
-    ])
+      "editItemDescription",
+      "editItemChildBacklog",
+      "editItemParentItem",
+    ]),
   },
   watch: {},
   computed: {
-    ...mapState(["tags", "users", "itemModalInfo", "tagField"])
-  }
+    ...mapState([
+      "tags",
+      "users",
+      "itemModalInfo",
+      "tagField",
+      "parentItems",
+      "childBacklogs",
+    ]),
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -246,4 +323,4 @@ export default {
 .modal-content-2rows {
   margin-bottom: 0;
 }
-</style> 
+</style>
