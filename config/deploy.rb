@@ -21,6 +21,7 @@ set :deploy_to, "/var/www/applications/scuria"
 set :pty, true
 
 # Default value for :linked_files is []
+append :linked_files, ".env"
 append :linked_files, "config/database.yml"
 append :linked_files, "config/master.key"
 append :linked_files, "config/webpacker.yml"
@@ -41,20 +42,18 @@ set :keep_releases, 2
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-
 # rbenv
 set :rbenv_type, :user # or :system, or :fullstaq (for Fullstaq Ruby), depends on your rbenv setup
 #set :rbenv_ruby, '2.6.5'
 
 # in case you want to set ruby version from the file:
-set :rbenv_ruby, File.read('.ruby-version').strip
+set :rbenv_ruby, File.read(".ruby-version").strip
 set :rbenv_path, "$HOME/.rbenv"
 
 set :rbenv_prefix, "RBENV_ROOT=#{fetch(:rbenv_path)} RBENV_VERSION=#{fetch(:rbenv_ruby)} #{fetch(:rbenv_path)}/bin/rbenv exec"
 set :rbenv_map_bins, %w{rake gem bundle ruby rails}
 set :rbenv_roles, :all # default value
 
-
 # bundler
-append :linked_dirs, '.bundle'
+append :linked_dirs, ".bundle"
 set :bundle_jobs, 2 # default: 4, only available for Bundler >= 1.4
