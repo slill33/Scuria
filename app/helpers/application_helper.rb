@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def display_header_backlogs
+    return Backlog.where(id: UserToBacklog.where(user_id: current_user.id).pluck(:backlog_id))
+  end
+
   def current_team
     return Team.find_by_id(current_user.team_id)
   end

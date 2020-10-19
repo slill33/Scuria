@@ -69,6 +69,7 @@ gem 'devise'
 gem 'devise_invitable'
 gem 'devise-i18n'
 gem 'devise-i18n-views'
+gem 'rails-i18n'
 gem "paranoia", "~> 2.2"
 
 gem 'bootstrap', '~> 4.1.1'

@@ -7,7 +7,6 @@ class User < ApplicationRecord
   has_many :team_roles, through: :user_to_backlogs
   has_many :api_sessions
 
-  acts_as_paranoid
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :lockable,
          :timeoutable, :trackable, invite_for: 24.hours

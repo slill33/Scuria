@@ -10,13 +10,13 @@ html
   body
     - if user_signed_in?
       nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
-        = link_to("Scuria", root_path, class: "navbar-brand")
+        = link_to("#{current_team.name}", root_path, class: "navbar-brand")
         .dropdown
           button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             = current_backlog_name
-          - if current_team.backlogs.length > 0
+          - if display_header_backlogs.length > 0
             .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
-              - current_team.backlogs.each do |backlog|
+              - display_header_backlogs.each do |backlog|
                 = link_to(backlog.name, backlog_path(backlog.id), class: "dropdown-item", "data-turbolinks": false)
         #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
           ul.navbar-nav
