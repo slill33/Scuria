@@ -65,12 +65,22 @@ export default {
   closeItemModal({ commit }) {
     commit(MutationTypes.CLOSE_ITEM_MODAL);
   },
-  addTag({ commit }, name) {
-    var newTag = {
-      id: 10,
-      name: name
-    };
-    commit(MutationTypes.ADD_TAG_SUCCESS, newTag);
+  addTag({ commit, state }, name) {
+    axios
+      .post(
+        `/api/v1/private/backlogs/${state.backlogId}/backlog_tags/create.json`,
+        {
+          name: name,
+        }
+      )
+      .then(response => {
+        commit(MutationTypes.ADD_TAG_SUCCESS, response.data);
+      })
+      .catch(error => {
+        commit(MutationTypes.API_FAILURE, error);
+      });
+
+
   },
   toggleTag({ commit }, tagId) {
     commit(MutationTypes.TOGGLE_TAG, tagId);
