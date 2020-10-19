@@ -7,7 +7,7 @@
     br/
     - current_team.backlog_types.each do|type|
       .form-check.form-check-inline
-        - if Backlog.find_by_id(params[:id]).backlog_type_id == type.id
+        - if params[:action] == "edit" && Backlog.find_by_id(params[:id]).backlog_type_id == type.id
           = form.radio_button :backlog_type_id, type.id, class:'form-check-label', checked: true
           = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
         - else
