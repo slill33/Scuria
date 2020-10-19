@@ -1,4 +1,5 @@
 .content-box
+  = render 'flash'
   h1 バックログ編集
   = render partial: "form", locals: { backlog:@backlog ,action:"edit"}
 
