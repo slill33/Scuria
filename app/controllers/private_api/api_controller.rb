@@ -18,5 +18,10 @@ module PrivateApi
         render json: { message: "Memberには許可されていません" }, status: 403
       end
     end
+
+    def parse_request_body
+      body = request.body.read
+      @params ||= JSON.parse(body, symbolize_names: true)
+    end
   end
 end

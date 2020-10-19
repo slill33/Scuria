@@ -17,7 +17,7 @@ module PrivateApi
         name: @params[:name],
         color: @params[:color],
         position: new_position,
-        parent_id: @params[:parent_id]
+        parent_id: @params[:parent_id],
       )
 
       if @bc.valid?
@@ -31,7 +31,7 @@ module PrivateApi
     def update
       @bc.name = @params[:name]
       @bc.color = @params[:color]
-      @bc.parent_id =  @params[:parent_id]
+      @bc.parent_id = @params[:parent_id]
 
       if @bc.valid?
         @bc.save!
@@ -73,9 +73,5 @@ module PrivateApi
     #  color: '#000000'
     #  position: 3
     #}
-    def parse_request_body
-      body = request.body.read
-      @params ||= JSON.parse(body, symbolize_names: true)
-    end
   end
 end

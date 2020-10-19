@@ -116,9 +116,5 @@ module PrivateApi
     #  tag_ids: [3, 4, 8],
     #  priority: 3
     #}
-    def parse_request_body
-      body = request.body.read
-      @params ||= JSON.parse(body, symbolize_names: true)
-    end
   end
 end

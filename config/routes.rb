@@ -29,4 +29,6 @@ Rails.application.routes.draw do
   match "/api/v1/private/backlogs/:id/backlog_items/destroy.json", controller: :"private_api/backlog_items", action: :destroy, format: false, via: [:delete]
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
+  # backlog tag
+  match "/api/v1/private/backlogs/:id/backlog_tags/create.json", controller: :"private_api/backlog_tags", action: :create, format: false, via: [:post]
 end

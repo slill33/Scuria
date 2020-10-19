@@ -13,7 +13,12 @@ export const mutations = {
     state.parentItems = posts.message.allocated_items_from_parent_backlog
   },
   [MUTATION_TYPES.API_FAILURE](state, error) {
-    alert(error.response.data.message);
+    if (error.response.data.message != null) {
+      alert(error.response.data.message);
+    }
+    else {
+      alert(error)
+    }
   },
   [MUTATION_TYPES.SET_COLUMNS](state, val) {
     state.columns = val;
@@ -25,8 +30,8 @@ export const mutations = {
   [MUTATION_TYPES.CLOSE_ITEM_MODAL](state) {
     state.itemModalFlag = false;
   },
-  [MUTATION_TYPES.ADD_TAG_SUCCESS](state, newTag) {
-    state.tags[newTag.id] = { name: newTag.name };
+  [MUTATION_TYPES.ADD_TAG_SUCCESS](state, response) {
+    state.tags[response.created_tag_id] = { name: state.itemModalInfo.tagName };
     state.itemModalInfo.tagName = "";
     state.itemModalInfo.tagField = false;
   },
