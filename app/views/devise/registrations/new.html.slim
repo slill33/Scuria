@@ -1,0 +1,36 @@
+.container
+  h1 サインアップ
+  = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+    = render "devise/shared/error_messages", resource: resource
+    .form-group
+      .field
+        label for="team_name"  チーム名：
+        br/
+        input.form-control autofocus="" name="team_name" type="text" /
+    .form-group
+      .field
+        = f.label :name, "名前"
+        br/
+        = f.text_field :name, {class: "form-control"}
+    .form-group
+      .field
+        = f.label :email, "メールアドレス"
+        br/
+        = f.email_field :email, class: "form-control", autofocus: true, autocomplete: "email"
+    .form-group
+      .field
+        = f.label :password, "パスワード"
+        / - if @minimum_password_length
+        /   em
+        /     | (#{@minimum_password_length} characters minimum)
+        br/
+        = f.password_field :password, class: "form-control", autocomplete: "new-password"
+    .form-group
+      .field
+        = f.label :password_confirmation, "確認用パスワード"
+        br/
+        = f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password"
+    .form-group.text-right
+      .actions
+        = f.submit "サインアップ", class:"btn btn-primary"
+      / = render "devise/shared/links"

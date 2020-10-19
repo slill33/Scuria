@@ -1,5 +1,7 @@
 class BacklogsController < ApplicationController
   before_action :authenticate_user!
+  before_action :check_affiliate, only: [:show]
+  before_action :check_super, except: [:index, :show]
 
   def index
     backlogs = Backlog.where(team_id: current_user[:team_id])
@@ -30,7 +32,7 @@ class BacklogsController < ApplicationController
     JSON.parse(params[:user_and_role_ids], symbolize_names: true).each do |hash|
       UserToBacklog.create(user_id: hash[:user_id], backlog_id: backlog.id, team_role_id: hash[:role_id])
     end
-
+    flash[:success] = "バックログの作成をしました"
     redirect_to backlogs_path, turbolinks: false
   end
 
@@ -74,16 +76,31 @@ class BacklogsController < ApplicationController
         team_role_id: hash[:role_id],
       )
     end
-
+    flash[:success] = "バックログの編集をしました"
     redirect_to backlogs_path, turbolinks: false
   end
 
   def destroy
     Backlog.find(params[:id]).destroy
+    flash[:success] = "バックログを削除しました"
     redirect_to action: :index
   end
 
   private
+
+  def check_super
+    unless current_user.super
+      flash[:danger] = "権限がありません"
+      redirect_to action: :index
+    end
+  end
+
+  def check_affiliate
+    unless UserToBacklog.where(backlog_id: params[:id]).pluck(:user_id).include?(current_user.id) || current_user.super
+      flash[:danger] = "対象バックログには所属していません"
+      redirect_to action: :index
+    end
+  end
 
   def get_backlog_role(user, backlog_id)
     TeamRole.find_by_id(user.user_to_backlogs.where(backlog_id: backlog_id)[0].team_role_id)

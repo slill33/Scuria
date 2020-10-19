@@ -1,0 +1,25 @@
+.container
+  h1 ユーザー作成
+  = form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put }) do |f|
+    = hidden_field_tag :authenticity_token, form_authenticity_token
+    = render "devise/shared/error_messages", resource: resource
+    = f.hidden_field :invitation_token, readonly: true
+    - if f.object.class.require_password_on_accepting
+      .form-group
+        .field
+          = f.label :name,"名前"
+          br/
+          = f.text_field :name, {class: "form-control"}
+      .form-group
+        .field
+          = f.label :password,"パスワード"
+          br/
+          = f.password_field :password, {class: "form-control"}
+      .form-group
+        .field
+          = f.label :password_confirmation,"確認用パスワード"
+          br/
+          = f.password_field :password_confirmation, {class: "form-control"}
+    .form-group.text-right
+      .actions
+        = f.submit "ユーザー作成",class:"btn btn-primary"
