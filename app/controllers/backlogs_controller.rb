@@ -49,19 +49,18 @@ class BacklogsController < ApplicationController
   def update
     backlog_info = backlog_params
     backlog = Backlog.find_by_id(params[:id])
-
     if backlog_info[:parent_id] != nil
       backlog.update_attributes(
         name: backlog_info[:name],
         parent_id: backlog_info[:parent_id],
         team_id: current_user[:team_id],
-        backlog_type_id: 1,
+        backlog_type_id: backlog_info[:backlog_type_id],
       )
     else
       backlog.update_attributes(
         name: backlog_info[:name],
         team_id: current_user[:team_id],
-        backlog_type_id: 1,
+        backlog_type_id: backlog_info[:backlog_type_id],
       )
     end
 

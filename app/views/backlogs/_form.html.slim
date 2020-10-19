@@ -7,8 +7,13 @@
     br/
     - current_team.backlog_types.each do|type|
       .form-check.form-check-inline
-        = form.radio_button :backlog_type_id, type.id, class:'form-check-label'
-        = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
+        - if Backlog.find_by_id(params[:id]).backlog_type_id == type.id
+          = form.radio_button :backlog_type_id, type.id, class:'form-check-label', checked: true
+          = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
+        - else
+          = form.radio_button :backlog_type_id, type.id, class:'form-check-label'
+          = form.label :backlog_type_id, type.name, {value: type.id, class: "form-check-label"}
+
   .form-group
     = form.label :parent_id, "親バックログ"
     = form.select :parent_id, current_team.backlogs.pluck(:name,:id).unshift(["未設定",0]),{},{class: 'form-control'}
