@@ -1,0 +1,13 @@
+.container
+  h1 ユーザー招待
+  = form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post }) do |f|
+    = render "devise/shared/error_messages", resource: resource
+    - resource.class.invite_key_fields.each do |field|
+      .form-group
+        .field
+          = f.label field
+          br/
+          = f.text_field field, {class: "form-control"}
+      .form-group.text-right
+        .actions
+          = f.submit "ユーザー招待",class:"btn btn-primary"

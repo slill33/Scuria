@@ -14,7 +14,7 @@
           v-for="(column, index) in columns"
           :key="index"
           class="card text-white mb-3 column"
-          v-bind:style="{ 'background-color': column.color}"
+          v-bind:style="{ 'background-color': column.color }"
           :column="column"
           :columnIndex="index"
         ></Column>
@@ -22,9 +22,10 @@
           type="button"
           class="btn btn-dark rounded-circle p-0 column-add"
           @click="newColumn()"
-        >＋</button>
+        >
+          ＋
+        </button>
       </draggable>
-      <span>{{$store.state}}</span>
     </div>
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
     draggable,
     Column,
     ItemModal,
-    ColumnModal
+    ColumnModal,
   },
   data() {
     return {};
@@ -58,8 +59,8 @@ export default {
       },
       set(val) {
         this.setColumns(val);
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions([
@@ -67,9 +68,9 @@ export default {
       "getBacklog",
       "setColumns",
       "setBacklogId",
-      "newColumn"
-    ])
-  }
+      "newColumn",
+    ]),
+  },
 };
 </script>
 

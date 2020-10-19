@@ -1,6 +1,8 @@
 class Users::InvitationsController < Devise::InvitationsController
+  protect_from_forgery
   before_action :configure_invite_params, only: [:create]
   before_action :configure_accept_invitation_params, only: [:update]
+
   def new
     super
   end
@@ -23,14 +25,13 @@ class Users::InvitationsController < Devise::InvitationsController
     super
   end
 
-
   protected
 
   def configure_invite_params
     devise_parameter_sanitizer.permit(:invite, keys: [:team_id, :name, :super])
   end
+
   def configure_accept_invitation_params
     devise_parameter_sanitizer.permit(:accept_invitation, keys: [:name])
   end
 end
-

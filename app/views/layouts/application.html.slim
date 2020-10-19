@@ -10,13 +10,13 @@ html
   body
     - if user_signed_in?
       nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
-        a.navbar-brand href="#"  Scuria
+        = link_to("#{current_team.name}", root_path, class: "navbar-brand")
         .dropdown
           button#dropdownMenuButton.btn.btn-secondary.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" type="button"
             = current_backlog_name
-          - if current_team.backlogs.length > 0
+          - if display_header_backlogs.length > 0
             .dropdown-menu aria-labelledby="dropdownMenuButton" style="z-index:9999"
-              - current_team.backlogs.each do |backlog|
+              - display_header_backlogs.each do |backlog|
                 = link_to(backlog.name, backlog_path(backlog.id), class: "dropdown-item", "data-turbolinks": false)
         #navbarNavAltMarkup.collapse.navbar-collapse.justify-content-end
           ul.navbar-nav
@@ -25,20 +25,12 @@ html
                 a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   | 管理者メニュー
                 .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
-                  = link_to("ユーザー一覧", root_path, class: "dropdown-item")
+                  = link_to("ユーザー一覧", users_path, class: "dropdown-item")
             li.nav-item.dropdown
               a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 |チームメニュー
               .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
                 = link_to("バックログ一覧", backlogs_path, class: "dropdown-item")
-            li.nav-item.dropdown
-              a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                | バックログメニュー
-              .dropdown-menu.dropdown-menu-right aria-labelledby="navbarDropdownMenuLink"
-                = link_to("メンバー一覧", root_path, class: "dropdown-item")
-                - if current_user.super
-                  = link_to("ロール変更", root_path, class: "dropdown-item")
-                  = link_to("メンバー招待", root_path, class: "dropdown-item")
             li.nav-item.dropdown
               a#navbarDropdownMenuLink.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 | ユーザー設定
