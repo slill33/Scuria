@@ -10,6 +10,9 @@ Scuria is a task management web application that considers Scrum.
 
 https://scuria.site/
 
+# Description and Example
+https://drive.google.com/file/d/174DAc-zeeoJMGNKpUOFjEzow0M71bgiB/view?usp=sharing
+
 # Features
 
 There is a parent-child relationship in the backlog, and it is possible to prevent double management that occurs in Scrum@Scale.
